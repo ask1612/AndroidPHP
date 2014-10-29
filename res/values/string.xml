@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!--Main Activity-->
+<string name="app_name">AskJsonPHP</string>
+<string name="login_header">Enter User Name and Password</string>
+<string name="user_name">User Name</string>
+<string name="user_password">Password</string>
+<string name="register">Register</string>
+<string name="login">Login</string>
+    
+    <!--AskJson Activity-->
+<string name="header">Enter data here</string>
+<string name="name">Name</string>
+<string name="surname">Surname</string>
+<string name="city">City</string>
+<string name="street">Street</string>
+<string name="build">Build</string>
+<string name="flat">Flat</string>
+<string name="button_save">Save</string>
+
+</resources>

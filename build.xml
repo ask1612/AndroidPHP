@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<project name="AskJson" default="help">
+		<property file="local.properties" />
+		<property file="ant.properties" />
+		<loadproperties srcFile="project.properties" />
+		<import file="${sdk.dir}/tools/ant/build.xml" />
+	</project>

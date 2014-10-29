@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/mycolor"
+     >
+<!--ScrollView works where the orientation is changed  to Landscape-->    
+<ScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fadeScrollbars="true"
+        >
+<RelativeLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/mycolor"
+     >
+   
+<!--Label of Header -->    
+<TextView
+        android:id="@+id/txtHeader"
+        android:text="@string/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/edtName"
+        android:textColor="@color/blue"/>
+ 
+<!--Label of Name -->    
+<TextView
+        android:id="@+id/txtName"
+        android:text="@string/name"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtHeader"
+        android:textSize="14sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textColor="@color/black"/>
+<!--Label of Surname -->    
+<TextView
+        android:id="@+id/txtSurname"
+        android:text="@string/surname"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtName"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+<!--Label of City -->    
+<TextView
+        android:id="@+id/txtCity"
+        android:text="@string/city"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtSurname"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+<!--Label of  Street -->    
+<TextView
+        android:id="@+id/txtStreet"
+        android:text="@string/street"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtCity"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Label of  Build -->    
+<TextView
+        android:id="@+id/txtBuild"
+        android:text="@string/build"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtStreet"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+<!--Label of  Flat -->    
+<TextView
+        android:id="@+id/txtFlat"
+        android:text="@string/flat"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtBuild"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10sp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+ 
+<!--Edit of  Name -->    
+<EditText
+        android:id="@+id/edtName"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/txtHeader"
+        android:layout_toRightOf="@id/txtName"
+        android:inputType="text"
+        android:maxLength="50"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Edit of  Surname -->    
+<EditText
+        android:id="@+id/edtSurname"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtName"
+        android:layout_toRightOf="@id/txtSurname"
+        android:inputType="text"
+        android:maxLength="50"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Edit of  City -->    
+<EditText
+        
+        android:id="@+id/edtCity"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtSurname"
+        android:layout_toRightOf="@id/txtCity"
+        android:inputType="text"
+        android:maxLength="50"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Edit of  Street -->    
+<EditText
+        android:id="@+id/edtStreet"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtCity"
+        android:layout_toRightOf="@id/txtStreet"
+        android:inputType="text"
+        android:maxLength="50"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Edit of  Build -->    
+<EditText
+        android:id="@+id/edtBuild"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtStreet"
+        android:layout_toRightOf="@id/txtBuild"
+        android:inputType="numberDecimal"
+        android:maxLength="3"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!--Edit of  Flat -->    
+<EditText
+        android:id="@+id/edtFlat"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtBuild"
+        android:layout_toRightOf="@id/txtFlat"
+        android:inputType="numberDecimal"
+        android:maxLength="3"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+<!-- Button of writing data -->    
+<Button
+        android:id="@+id/btnSave"
+        android:text="@string/button_save"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtFlat"
+        android:layout_alignLeft="@+id/edtName"
+        />
+ </RelativeLayout>
+</ScrollView>
+</RelativeLayout>
+
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<resources>
+        <!--Main Activity-->
+    <color name="black">#000000</color>
+    <color name="orange">#f90</color>
+    <color name="translucent_red">#80ff0000</color>
+    <color name="blue">#000fff</color>
+    <color name="mycolor">#ffffd0</color>
+</resources>

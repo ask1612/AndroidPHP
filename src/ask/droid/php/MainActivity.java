@@ -14,7 +14,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
-import android.util.Log;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -40,15 +39,20 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
     private Button btnLogin,btnRegister;
     private EditText edtName, edtPassword;
-    private String username,password;
+    private String url,msg;
     private ProgressDialog pDialog;
     private JSONObject jsnObj=new JSONObject();
     private String index="0";  
     JSONParser jsonParser = new JSONParser();
-    private static final String LOGIN_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
-    private static final String TAG_SUCCESS = "success";
+    private static final String REG_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
+    private static final String LOG_URL = "http://192.168.1.3:7070/askJson/askjson_login.php";
+    private static final String REG_MESSAGE = "Register new  User...Please wait";
+    private static final String LOG_MESSAGE = "Login...Please wait";
     private static final String TAG_MESSAGE = "message"; 
     private static final String TAG_JSON = "askJSON";
+    private static final String TAG_SUCCESS = "success";
+    int success;
+    
     //felds of database User
      private static final String TAG_NAME = "name"; 
      private static final String TAG_PWD = "password";
@@ -68,18 +72,30 @@ public class MainActivity extends Activity {
         
         //The login button click handler
         btnLogin.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View v) {
-                Intent delItemIntent = new Intent(MainActivity.this, AskJson.class);
-                MainActivity.this.startActivity(delItemIntent);
+            public void onClick(View v) {
+                try{
+                    jsnObj.put(TAG_NAME,edtName.getText().toString());
+                    jsnObj.put(TAG_PWD,edtPassword.getText().toString());
+                    url=LOG_URL;msg=LOG_MESSAGE;
+                    new LogRegUser().execute();
+                    }
+                catch(JSONException e ){
+                    e.printStackTrace();
+                    }
+                if(success==1){
+                    Intent delItemIntent = new Intent(MainActivity.this, AskJson.class);
+                    MainActivity.this.startActivity(delItemIntent);
+                    }
                 }
             }); 
         //The register button click handler
         btnRegister.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View v) {
+            public void onClick(View v) {
                 try{
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
-                    new RegisterUser().execute();
+                    url=REG_URL;msg=REG_MESSAGE;
+                    new LogRegUser().execute();
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
@@ -90,73 +106,77 @@ public class MainActivity extends Activity {
     
     
     /**
-    * @Class RegisterUser
-    *{
-    * Class to transfer registered  user data as an JSON object to the server.   
-    * Class is created     when the register button is pressed.
+    *
+    * Class to transfer    user data as an JSON object to the server.   
+    * Class is created     when the register or login button is pressed.
     * 
     *@protected method of class:
     *            @void OnPreExecute();
     *            @String doInBackground(String...);
     *            @void onPostexecute(Sting);
-    *}  
+    *  
     */
-    class RegisterUser extends AsyncTask<String, String, String> {
-        //Before starting background thread Show Progress Dialog
+    
+    class LogRegUser extends AsyncTask<String, String, String> {
+        /**
+         *Before starting background thread Show Progress Dialog 
+         * Preexecuted function
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Register new  User...Please wait");
+            pDialog.setMessage(msg);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
             }
-		
+        
+        /**
+         * Function executed in background of  the main thread
+         * @param args
+         * @return String
+         */
 	@Override
 	protected String doInBackground(String... args) {
-	    int success;
             try {
-                // Building Parameters
                  List<NameValuePair> params = new ArrayList<NameValuePair>();
                  params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
-                 Log.d("request!", "starting");
-                //The user is posting  data to script
-                JSONObject json = jsonParser.makeHttpRequest(LOGIN_URL, "POST", params);
-                // full json response
-                Log.d("Register new user  attempt", json.toString());
-                // json success element
+                JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
                 success = json.getInt(TAG_SUCCESS);
-                if (success == 1) {
-                    Log.d("New user registered!", json.toString());              	
-                    return json.getString(TAG_MESSAGE);
-                    }
-                else{
-                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
-                    return json.getString(TAG_MESSAGE);
-                    }
+
+                return json.getString(TAG_MESSAGE);
                 }
             catch (JSONException e) {
                 e.printStackTrace();
                 }   
             return null;
             }
-        //After completing backgroun`d task Dismiss the progress dialog
+        
+        /**
+         * Post executed function
+         * @param response 
+         */
         @Override
         protected void onPostExecute(String response) {
-            pDialog.dismiss();
+            pDialog.dismiss();// dismiss the progress dialog
             if (response != null){
                 ImageToast(response);
                 }
             } 
    
-        }   
+        }
+    
+        /**
+         * New Toast function
+         * @param response 
+         */
         protected void ImageToast(String response){
-            // get your custom_toast.xml ayout
+            // get your image_toast.xml ayout
             LayoutInflater inflater = getLayoutInflater();
             View layout = inflater.inflate(R.layout.image_toast,
-            (ViewGroup) findViewById(R.id.custom_toast_layout_id));
-            // set a dummy image
+            (ViewGroup) findViewById(R.id.layoutImageToast));
+            // set an  image
             ImageView image = (ImageView) layout.findViewById(R.id.image);
             image.setImageResource(R.drawable.icon);
             // set a message

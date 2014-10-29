@@ -27,7 +27,6 @@ public final class R {
         public static final int btnLogin=0x7f060016;
         public static final int btnRegister=0x7f060017;
         public static final int btnSave=0x7f06000d;
-        public static final int custom_toast_layout_id=0x7f06000e;
         public static final int edtBuild=0x7f06000b;
         public static final int edtCity=0x7f060009;
         public static final int edtFlat=0x7f06000c;
@@ -37,6 +36,7 @@ public final class R {
         public static final int edtUserName=0x7f060014;
         public static final int edtUserPassword=0x7f060015;
         public static final int image=0x7f06000f;
+        public static final int layoutImageToast=0x7f06000e;
         public static final int text=0x7f060010;
         public static final int txtBuild=0x7f060006;
         public static final int txtCity=0x7f060004;

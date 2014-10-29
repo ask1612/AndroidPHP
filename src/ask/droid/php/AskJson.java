@@ -15,8 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class AskJson extends Activity
 {

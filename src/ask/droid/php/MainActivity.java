@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 
 
-
 public class MainActivity extends Activity {
     private Button btnLogin,btnRegister;
     private EditText edtName, edtPassword;
@@ -51,7 +50,7 @@ public class MainActivity extends Activity {
     private static final String TAG_MESSAGE = "message"; 
     private static final String TAG_JSON = "askJSON";
     private static final String TAG_SUCCESS = "success";
-    int success;
+    private static int success=0;
     
     //felds of database User
      private static final String TAG_NAME = "name"; 
@@ -144,8 +143,11 @@ public class MainActivity extends Activity {
                  params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
                 JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
                 success = json.getInt(TAG_SUCCESS);
-
-                return json.getString(TAG_MESSAGE);
+                if(success==0) return json.getString(TAG_MESSAGE);
+                else {
+                    // finish();
+                    return json.toString();
+                    }
                 }
             catch (JSONException e) {
                 e.printStackTrace();

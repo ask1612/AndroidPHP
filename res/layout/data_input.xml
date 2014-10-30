@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/mycolor"
+    android:background="@color/blue"
      >
 <!--ScrollView works where the orientation is changed  to Landscape-->    
 <ScrollView 
@@ -15,7 +15,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/mycolor"
+    android:background="@color/blue"
      >
    
 <!--Label of Header -->    
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/edtName"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/red"/>
  
 <!--Label of Name -->    
 <TextView

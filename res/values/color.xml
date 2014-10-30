@@ -9,6 +9,14 @@ and open the template in the editor.
     <color name="black">#000000</color>
     <color name="orange">#f90</color>
     <color name="translucent_red">#80ff0000</color>
-    <color name="blue">#000fff</color>
-    <color name="mycolor">#ffffd0</color>
+    <color name="blue">#33B5E5 </color>
+    <color name="siren">#AA66CC</color>
+    <color name="salat">#99CC00</color>
+    <color name="orange2">#FFBB33</color>
+    <color name="read">#FF4444</color>
+    <color name="green">#669900</color>
+    <color name="apelsin">#FF8800</color>
+    <color name="red">#CC0000</color>
+    
+    <color name="mycolor">#33B5E5</color>
 </resources>

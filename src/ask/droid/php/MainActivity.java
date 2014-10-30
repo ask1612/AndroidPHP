@@ -28,7 +28,10 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import android.os.AsyncTask.Status;
+import java.util.concurrent.ExecutionException;
 
 
 
@@ -40,7 +43,7 @@ public class MainActivity extends Activity {
     private EditText edtName, edtPassword;
     private String url,msg;
     private ProgressDialog pDialog;
-    private JSONObject jsnObj=new JSONObject();
+    private JSONObject jsnObj;
     private String index="0";  
     JSONParser jsonParser = new JSONParser();
     private static final String REG_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
@@ -50,8 +53,8 @@ public class MainActivity extends Activity {
     private static final String TAG_MESSAGE = "message"; 
     private static final String TAG_JSON = "askJSON";
     private static final String TAG_SUCCESS = "success";
-    private static int success=0;
-    
+    int success=0;
+     AsyncTask.Status status;
     //felds of database User
      private static final String TAG_NAME = "name"; 
      private static final String TAG_PWD = "password";
@@ -68,15 +71,21 @@ public class MainActivity extends Activity {
         btnRegister=(Button)findViewById(R.id.btnRegister);
         edtName= (EditText)findViewById(R.id.edtUserName);
         edtPassword= (EditText)findViewById(R.id.edtUserPassword);
-        
+        success=0;
         //The login button click handler
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try{
+                    jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     url=LOG_URL;msg=LOG_MESSAGE;
-                    new LogRegUser().execute();
+                    //new LogRegUser().execute();
+                    LogRegUser astask=new LogRegUser();
+                    astask.execute();
+                    String str =" Help "+ Integer.toString(success);
+                    if(astask.getStatus()==status.FINISHED){
+                        ImageToast(str);}
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
@@ -91,6 +100,7 @@ public class MainActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try{
+                    jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     url=REG_URL;msg=REG_MESSAGE;
@@ -142,16 +152,12 @@ public class MainActivity extends Activity {
                  List<NameValuePair> params = new ArrayList<NameValuePair>();
                  params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
                 JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
-                success = json.getInt(TAG_SUCCESS);
-                if(success==0) return json.getString(TAG_MESSAGE);
-                else {
-                    // finish();
-                    return json.toString();
-                    }
+                 // finish();
+                return json.toString();
                 }
-            catch (JSONException e) {
+            catch (Exception e) {
                 e.printStackTrace();
-                }   
+                } 
             return null;
             }
         
@@ -161,9 +167,22 @@ public class MainActivity extends Activity {
          */
         @Override
         protected void onPostExecute(String response) {
-            pDialog.dismiss();// dismiss the progress dialog
+            super.onPostExecute(response);
+        // Dismiss the progress dialog
+        if (pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+
             if (response != null){
-                ImageToast(response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    success = jObj.getInt(TAG_SUCCESS);
+                    String s=jObj.getString(TAG_MESSAGE);
+                    ImageToast(s);
+                    }
+                catch (JSONException ex) {
+                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             } 
    

@@ -17,6 +17,6 @@ and open the template in the editor.
     <color name="green">#669900</color>
     <color name="apelsin">#FF8800</color>
     <color name="red">#CC0000</color>
-    
-    <color name="mycolor">#33B5E5</color>
+    <color name="gray">#DCDCDC</color>
+    <color name="mycolor">#33b5e5</color>
 </resources>

@@ -13,6 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name ="AskJson"></activity>
+        <activity android:name ="AskJson" android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 </manifest>

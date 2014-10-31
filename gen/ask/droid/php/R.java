@@ -16,12 +16,13 @@ public final class R {
          */
         public static final int black=0x7f040000;
         public static final int blue=0x7f040003;
+        public static final int gray=0x7f04000b;
         public static final int green=0x7f040008;
-        public static final int mycolor=0x7f04000b;
+        public static final int mycolor=0x7f04000c;
         public static final int orange=0x7f040001;
         public static final int orange2=0x7f040006;
-        public static final int read=0x7f040007;
         public static final int red=0x7f04000a;
+        public static final int red2=0x7f040007;
         public static final int salat=0x7f040005;
         public static final int siren=0x7f040004;
         public static final int translucent_red=0x7f040002;
@@ -29,6 +30,7 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int icon=0x7f020001;
+        public static final int icon1=0x7f020002;
     }
     public static final class id {
         public static final int btnLogin=0x7f060016;

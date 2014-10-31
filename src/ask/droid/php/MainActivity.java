@@ -1,7 +1,9 @@
 /**
+ * I do not sleep tonight... I may not ever...
  * MainActivity.java
  * @author ASK
  * https://github.com/ask1612/AndroidPHP.git
+ * 
  * 
  */
 
@@ -28,10 +30,6 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import android.os.AsyncTask.Status;
-import java.util.concurrent.ExecutionException;
 
 
 
@@ -83,9 +81,7 @@ public class MainActivity extends Activity {
                     //new LogRegUser().execute();
                     LogRegUser astask=new LogRegUser();
                     astask.execute();
-                    String str =" Help "+ Integer.toString(success);
-                    if(astask.getStatus()==status.FINISHED){
-                        ImageToast(str);}
+                    while(astask.getExecuted()){};
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
@@ -127,12 +123,17 @@ public class MainActivity extends Activity {
     */
     
     class LogRegUser extends AsyncTask<String, String, String> {
+        private boolean executed=true;
+        public boolean getExecuted(){
+         return executed;   
+        };
         /**
          *Before starting background thread Show Progress Dialog 
          * Preexecuted function
          */
         @Override
         protected void onPreExecute() {
+            executed=true;
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage(msg);
@@ -153,11 +154,14 @@ public class MainActivity extends Activity {
                  params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
                 JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
                  // finish();
-                return json.toString();
+                success = json.getInt(TAG_SUCCESS);
+                executed=false;
+                return json.getString(TAG_MESSAGE);
                 }
             catch (Exception e) {
                 e.printStackTrace();
                 } 
+            executed=false;
             return null;
             }
         
@@ -168,24 +172,15 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-        // Dismiss the progress dialog
-        if (pDialog.isShowing()) {
-            pDialog.dismiss();
-        }
-
+            // Dismiss the progress dialog
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+                }
             if (response != null){
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    success = jObj.getInt(TAG_SUCCESS);
-                    String s=jObj.getString(TAG_MESSAGE);
-                    ImageToast(s);
-                    }
-                catch (JSONException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                ImageToast(response);
                 }
             } 
-   
+    
         }
     
         /**
@@ -209,4 +204,5 @@ public class MainActivity extends Activity {
             toast.setView(layout);
             toast.show();
             }
+    
     }

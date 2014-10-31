@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,12 +32,13 @@ import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-
-
-
-
-public class MainActivity extends Activity {
+/********************************************************************
+ * 
+ * Main  activity.
+ * 
+ ********************************************************************/
+public class MainActivity extends Activity implements AsyncTaskListener, OnClickListener{
+    
     private Button btnLogin,btnRegister;
     private EditText edtName, edtPassword;
     private String url,msg;
@@ -51,102 +53,182 @@ public class MainActivity extends Activity {
     private static final String TAG_MESSAGE = "message"; 
     private static final String TAG_JSON = "askJSON";
     private static final String TAG_SUCCESS = "success";
-    int success=0;
-     AsyncTask.Status status;
     //felds of database User
-     private static final String TAG_NAME = "name"; 
-     private static final String TAG_PWD = "password";
-     
+    private static final String TAG_NAME = "name"; 
+    private static final String TAG_PWD = "password";
+    int success=0;
+    HttpIO mHttpIO;
+   
  
-    /**
-     * Called when the activity is first created.
-     */
+/********************************************************************
+ * 
+ * onCreate()
+ * gets called when the activity is first created.
+ * @param icicle
+ * 
+ ********************************************************************/
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.main);
+        
         btnLogin= (Button)findViewById(R.id.btnLogin);
         btnRegister=(Button)findViewById(R.id.btnRegister);
         edtName= (EditText)findViewById(R.id.edtUserName);
         edtPassword= (EditText)findViewById(R.id.edtUserPassword);
-        success=0;
-        //The login button click handler
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+    
+        btnLogin.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
+        }
+    
+/********************************************************************
+ * 
+ * onClick()
+ * gets  called  when any button is pressed
+ * @param v
+ * 
+ ********************************************************************/
+    
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            //Button Login is pressed
+            case R.id.btnLogin:
                 try{
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     url=LOG_URL;msg=LOG_MESSAGE;
-                    //new LogRegUser().execute();
-                    LogRegUser astask=new LogRegUser();
-                    astask.execute();
-                    while(astask.getExecuted()){};
+                    HttpIO astask= new HttpIO((AsyncTaskListener)this);
+                    astask.execute();// = new JsonViaHttpIO();
+                    while(astask.isAsTaskRunning()){};//Wait for the end of the async task
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
                     }
                 if(success==1){
-                    Intent delItemIntent = new Intent(MainActivity.this, AskJson.class);
-                    MainActivity.this.startActivity(delItemIntent);
+                    Intent personIntent = new Intent(MainActivity.this, AskJson.class);
+                    MainActivity.this.startActivity(personIntent);
                     }
-                }
-            }); 
-        //The register button click handler
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+                break;
+            //Button Register pressed    
+            case R.id.btnRegister:
+                
                 try{
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     url=REG_URL;msg=REG_MESSAGE;
-                    new LogRegUser().execute();
+                    new HttpIO((AsyncTaskListener)this).execute();
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
                     }
-                }
-            }); 
+                
+                break;
+            
+            }
         }
+/********************************************************************
+ * 
+ * AsyncTask methods
+ * @return
+ * 
+ ********************************************************************/
     
-    
-    /**
-    *
-    * Class to transfer    user data as an JSON object to the server.   
-    * Class is created     when the register or login button is pressed.
-    * 
-    *@protected method of class:
-    *            @void OnPreExecute();
-    *            @String doInBackground(String...);
-    *            @void onPostexecute(Sting);
-    *  
-    */
-    
-    class LogRegUser extends AsyncTask<String, String, String> {
+    @Override
+       public Object onRetainNonConfigurationInstance() {
+        if (mHttpIO != null) {
+            mHttpIO.detach();
+            }
+        return(mHttpIO);
+        }
+/********************************************************************
+ * 
+ * interface AsyncTaskListener
+ * onTaskStarted()
+ * 
+ ********************************************************************/
+
+    public void onTaskStarted() {
+        }
+/********************************************************************
+ * 
+ * interface AsyncTaskListener
+ * onTaskFinished()
+ * 
+ ********************************************************************/
+
+    public void onTaskFinished(String result) {
+        }
+
+/********************************************************************
+ *
+ * HttpIO{}
+ * Class to transfer    user data as an JSON object to the server,   
+ * gets created     when the register or login button is pressed.
+ * @protected method of class:
+ *            @void OnPreExecute();
+ *            @String doInBackground(String...);
+ *            @void onPostexecute(Sting);
+ *            @AsyncTaskListener listener;
+ *  
+ ********************************************************************/
+   
+    class HttpIO extends AsyncTask<String, String, String> {
+        private final AsyncTaskListener listener;
+        public HttpIO(AsyncTaskListener listener) {
+            this.listener = listener;
+            }
+        private MainActivity mActivity = null;
         private boolean executed=true;
-        public boolean getExecuted(){
-         return executed;   
-        };
-        /**
-         *Before starting background thread Show Progress Dialog 
-         * Preexecuted function
-         */
+        private AsyncTaskListener callback;
+
+        public void GetTask(MainActivity act){
+            this.mActivity = act;
+            this.callback = (AsyncTaskListener)act;
+        }
+        public boolean isAsTaskRunning(){
+            return executed;   
+            };
+        void attach(MainActivity a) {
+            mActivity = a;
+            }
+        void detach() {
+            mActivity = null;
+            }
+
+/********************************************************************
+ * 
+ * onPreExecute()
+ * gets  called before starting the background thread.
+ * Show Progress Dialog 
+ * 
+ ********************************************************************/
         @Override
         protected void onPreExecute() {
             executed=true;
             super.onPreExecute();
+            
+            
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage(msg);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
             }
+
         
-        /**
-         * Function executed in background of  the main thread
-         * @param args
-         * @return String
-         */
+/********************************************************************
+ * 
+ * doInBackground()
+ * gets called on the background  main thread when execute() is
+ * invoked on an instance of AysncTask.
+ * 
+ * @param args
+ * @return String
+ * 
+ ********************************************************************/
 	@Override
 	protected String doInBackground(String... args) {
             try {
@@ -165,10 +247,13 @@ public class MainActivity extends Activity {
             return null;
             }
         
-        /**
-         * Post executed function
-         * @param response 
-         */
+/********************************************************************
+ * 
+ * onPostExecute()
+ * gets called when doInBackground() is finished 
+ * @param response
+ * 
+ ********************************************************************/
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
@@ -183,10 +268,13 @@ public class MainActivity extends Activity {
     
         }
     
-        /**
-         * New Toast function
-         * @param response 
-         */
+/********************************************************************
+ * 
+ * ImageToast()
+ * 
+ * @param response
+ * 
+ ********************************************************************/
         protected void ImageToast(String response){
             // get your image_toast.xml ayout
             LayoutInflater inflater = getLayoutInflater();
@@ -204,5 +292,5 @@ public class MainActivity extends Activity {
             toast.setView(layout);
             toast.show();
             }
-    
+        
     }

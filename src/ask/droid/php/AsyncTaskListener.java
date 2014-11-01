@@ -5,6 +5,8 @@
  */
 package ask.droid.php;
 
+import org.json.JSONObject;
+
 /**
  * I do not sleep tonight... I may not ever...
  * AsyncTaskListener.java
@@ -13,6 +15,6 @@ package ask.droid.php;
  * 
 */
 public interface AsyncTaskListener {
-    void onTaskStarted();
+    JSONObject onTaskStarted();
     void onTaskFinished(String result);
  }

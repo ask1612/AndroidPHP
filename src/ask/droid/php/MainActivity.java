@@ -13,19 +13,14 @@ package ask.droid.php;
 
 import org.json.JSONException;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import org.json.JSONObject;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,23 +30,22 @@ import java.util.logging.Logger;
  * 
  ********************************************************************/
 public class MainActivity extends Activity implements AsyncTaskListener, OnClickListener{
-    
+    private static  Resources res;
     private Button btnLogin,btnRegister;
     private EditText edtName, edtPassword;
-    private JSONObject jsnObj;
-    private static final String URL = "http://192.168.1.3:7070/askJson/askjson_input.php";
-    private static final String REG_MESSAGE = "Register new  User...Please wait";
-    private static final String LOG_MESSAGE = "Login...Please wait";
-    private static final String TAG_MESSAGE = "message"; 
-    private static final String TAG_SUCCESS = "success";
-    private static final String BTN_LOG = "login"; 
-    private static final String BTN_REG = "register"; 
-    private static final String TAG_BTN = "button"; 
-    private static final String TAG_URL = "url"; 
-    //felds of database User
-    private static final String TAG_NAME = "name"; 
-    private static final String TAG_PWD = "password";
-   
+    private static JSONObject jsnObj;
+    
+    //JSON
+    private  String TAG_BTN;//tag "button" 
+    private  String VAL_BTNLOG;//value "login" 
+    private  String VAL_BTNREG;//value "register"
+    private  String TAG_MESSAGE;//tag "message" 
+    private  String VAL_MESSAGELOG;//value "Login...Please wait" 
+    private  String VAL_MESSAGEREG;//value "Register new  User...Please wait" 
+    private  String TAG_SUCCESS;//tag "success"
+    private  String TAG_NAME;//tag "name"
+    private  String TAG_PWD;//tag "password"
+    
  
 /********************************************************************
  * 
@@ -72,7 +66,8 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
-        }
+        getResourcesStrings();
+      }
     
 /********************************************************************
  * 
@@ -91,36 +86,29 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
-                    jsnObj.put(TAG_BTN,BTN_LOG);
-                    jsnObj.put(TAG_MESSAGE, LOG_MESSAGE);
-                    jsnObj.put(TAG_URL, URL);
-                    HttpIO astask= new HttpIO(MainActivity.this);
-                    astask.execute();// = new JsonViaHttpIO();
+                    jsnObj.put(TAG_BTN,VAL_BTNLOG);
+                    jsnObj.put(TAG_MESSAGE,VAL_MESSAGELOG);
                     }
-                catch(JSONException e ){
-                    e.printStackTrace();
+                catch (JSONException ex) {
+                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 break;
             //Button Register pressed    
             case R.id.btnRegister:
-                
-                try{
+                try {
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
-                    jsnObj.put(TAG_BTN,BTN_REG);
-                    jsnObj.put(TAG_MESSAGE, REG_MESSAGE);
-                    jsnObj.put(TAG_URL, URL);
-                    HttpIO astask= new HttpIO(MainActivity.this);
-                    astask.execute();// = new JsonViaHttpIO();
+                    jsnObj.put(TAG_BTN,VAL_BTNREG);
+                    jsnObj.put(TAG_MESSAGE,VAL_MESSAGEREG);
                     }
-                catch(JSONException e ){
-                    e.printStackTrace();
+                catch (JSONException ex) {
+                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                
                 break;
-            
             }
+        HttpIO astask= new HttpIO(MainActivity.this);
+        astask.execute();
         }
 /********************************************************************
  * 
@@ -141,43 +129,35 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
 
     public void onTaskFinished(String response) {        
         try {
-            jsnObj=new JSONObject(response);
-            ImageToast(jsnObj.getString(TAG_MESSAGE));
-    //      ImageToast(response);
-            if(jsnObj.getInt(TAG_SUCCESS)==1&&jsnObj.getString(TAG_BTN).compareTo(BTN_LOG)==0){
+            JSONObject jsnObjResponse=new JSONObject(response);
+            if(jsnObjResponse.getInt(TAG_SUCCESS)==1
+                &&jsnObj.getString(TAG_BTN).compareTo(VAL_BTNLOG)==0){
                 Intent personIntent = new Intent(MainActivity.this, AskJson.class);
                 MainActivity.this.startActivity(personIntent);
-            }
-        } 
+                }
+            } 
         catch (JSONException ex) {
             Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-    
 /********************************************************************
  * 
- * ImageToast()
- * 
- * @param response
+ * interface AsyncTaskListener
+ * onTaskFinished()
  * 
  ********************************************************************/
-        protected void ImageToast(String response){
-            // get your image_toast.xml ayout
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.image_toast,
-            (ViewGroup) findViewById(R.id.layoutImageToast));
-            // set an  image
-            ImageView image = (ImageView) layout.findViewById(R.id.image);
-            image.setImageResource(R.drawable.icon);
-            // set a message
-            TextView text = (TextView) layout.findViewById(R.id.text);
-            text.setText(response);
-            // Toast...
-            Toast toast = new Toast(getApplicationContext() );
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-            }
+    public  void getResourcesStrings(){
+        res = getResources();
+       //Getting  strings from resources
+       this.TAG_SUCCESS=res.getString(R.string.tag_success);
+       this.VAL_BTNLOG=res.getString(R.string.val_btnlog);
+       this.VAL_BTNREG=res.getString(R.string.val_btnreg);
+       this.TAG_BTN=res.getString(R.string.tag_btn);
+       this.TAG_NAME=res.getString(R.string.tag_name);
+       this.TAG_PWD=res.getString(R.string.tag_pwd);
+       this.TAG_MESSAGE=res.getString(R.string.tag_message);
+       this.VAL_MESSAGELOG=res.getString(R.string.val_messagelog);
+       this.VAL_MESSAGEREG=res.getString(R.string.val_messagereg);
         
+        }
     }

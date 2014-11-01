@@ -80,7 +80,20 @@ public final class R {
         public static final int register=0x7f050004;
         public static final int street=0x7f05000a;
         public static final int surname=0x7f050008;
+        public static final int tag_btn=0x7f050016;
+        public static final int tag_message=0x7f050012;
+        public static final int tag_name=0x7f050017;
+        public static final int tag_pwd=0x7f050018;
+        public static final int tag_success=0x7f050013;
+        public static final int tag_url=0x7f05000f;
         public static final int user_name=0x7f050002;
         public static final int user_password=0x7f050003;
+        public static final int val_btnlog=0x7f050014;
+        public static final int val_btnreg=0x7f050015;
+        public static final int val_messagelog=0x7f050011;
+        public static final int val_messagereg=0x7f050010;
+        /**  Strings as resources 
+         */
+        public static final int val_url=0x7f05000e;
     }
 }

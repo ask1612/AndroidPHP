@@ -10,7 +10,14 @@ package ask.droid.php;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,27 +41,40 @@ import org.json.JSONObject;
  ********************************************************************/
    
     class HttpIO extends AsyncTask<String, String, String> {
+    private static  Resources res;
     protected AsyncTaskListener callback;
     protected Activity activity;
     protected ProgressDialog pDialog;
     protected JSONObject jsnObj;
-    protected JSONObject jsnObjHttp;
-    private static final String TAG_MESSAGE = "message"; 
+    
+    //JSON
+    private  String TAG_MESSAGE;//message 
+    private  String VAL_URL;//url
     private static final String TAG_JSON = "askJSON";
-    private static final String TAG_BTN = "button"; 
-    private static final String TAG_URL = "url";
-        //felds of database User
-    private static final String TAG_NAME = "name"; 
-    private static final String TAG_PWD = "password";
-
+ 
     JSONParser jsonParser = new JSONParser();
 
-    //constructor
+/********************************************************************
+ * 
+ * constructor
+ * 
+ ********************************************************************/
         public HttpIO(Activity act) {
-            this.callback = (AsyncTaskListener)act;
             this.activity=act;
+            this.callback = (AsyncTaskListener)act;
             }
-   
+/********************************************************************
+ * 
+ * getResourcesString()
+ * 
+ ********************************************************************/
+       void getResourcesStrings(){
+           res = activity.getResources();
+           this.VAL_URL=res.getString(R.string.val_url);
+           this.TAG_MESSAGE=res.getString(R.string.tag_message);
+       } 
+               
+    
 /********************************************************************
  * 
  * onPreExecute()
@@ -65,50 +85,42 @@ import org.json.JSONObject;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(this.activity);
-        try {
+            getResourcesStrings();
+            jsnObj=new JSONObject();
             jsnObj=callback.onTaskStarted();
-            jsnObjHttp=new JSONObject();
-            jsnObjHttp.put(TAG_NAME,jsnObj.getString(TAG_NAME));
-            jsnObjHttp.put(TAG_PWD,jsnObj.getString(TAG_PWD));
-            jsnObjHttp.put(TAG_BTN,jsnObj.getString(TAG_BTN));
-            pDialog.setMessage(jsnObj.getString(TAG_MESSAGE));
-            }
-        catch (JSONException ex) {
-            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pDialog = new ProgressDialog(this.activity);
+            try {
+                pDialog.setMessage(jsnObj.getString(TAG_MESSAGE));
+                }
+            catch (JSONException ex) {
+                Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+                }
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
+            jsnObj.remove(TAG_MESSAGE);
             }
+/******************************************************************** 
+  *  
+  * doInBackground() 
+  * gets called on the background  main thread when execute() is 
+  * invoked on an instance of AysncTask. 
+  *  
+  * @param args 
+  * @return String 
+  *  
+  ********************************************************************/ 
+ 	@Override 
+ 	protected String doInBackground(String... args) { 
+                 List<NameValuePair> params = new ArrayList<NameValuePair>(); 
+                 params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString())); 
+                 JSONObject json = jsonParser.makeHttpRequest(VAL_URL,"POST",params); 
+                  // finish(); 
+                 return json.toString(); 
+             } 
+          
 
         
-/********************************************************************
- * 
- * doInBackground()
- * gets called on the background  main thread when execute() is
- * invoked on an instance of AysncTask.
- * 
- * @param args
- * @return String
- * 
- ********************************************************************/
-	@Override
-	protected String doInBackground(String... args) {
-            try {
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair(TAG_JSON, jsnObjHttp.toString()));
-                JSONObject json = jsonParser.makeHttpRequest(jsnObj.getString(TAG_URL),
-                "POST", params);
-                json.put(TAG_BTN, jsnObjHttp.getString(TAG_BTN));
-                 // finish();
-                return json.toString();
-                }
-            catch (Exception e) {
-                e.printStackTrace();
-                } 
-            return null;
-            }
         
 /********************************************************************
  * 
@@ -117,16 +129,47 @@ import org.json.JSONObject;
  * @param response
  * 
  ********************************************************************/
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing()) {
-                pDialog.dismiss();
-                }
-            if (response != null){
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        // Dismiss the progress dialog
+        if (pDialog.isShowing()) {
+            pDialog.dismiss();
+            }
+        if (response != null){
+            try {
+                jsnObj=new JSONObject(response);
+                imageToast(jsnObj.getString(TAG_MESSAGE));
                 callback.onTaskFinished(response);
                 }
-            } 
-    
-        }
+            catch (JSONException ex) {
+                Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } 
+ /********************************************************************
+ * 
+ * ImageToast()
+ * 
+ * @param response
+ * 
+ ********************************************************************/
+        protected void imageToast(String response){
+            // get your image_toast.xml ayout
+            LayoutInflater inflater = activity.getLayoutInflater();
+            View layout = inflater.inflate(R.layout.image_toast,
+            (ViewGroup) activity.findViewById(R.id.layoutImageToast));
+            // set an  image
+            ImageView image = (ImageView) layout.findViewById(R.id.image);
+            image.setImageResource(R.drawable.icon);
+            // set a message
+            TextView text = (TextView) layout.findViewById(R.id.text);
+            text.setText(response);
+            // Toast...
+            Toast toast = new Toast(activity.getApplicationContext() );
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+            }
+   
+     }

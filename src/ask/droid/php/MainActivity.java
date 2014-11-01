@@ -31,6 +31,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /********************************************************************
  * 
@@ -46,13 +48,17 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private JSONObject jsnObj;
     private String index="0";  
     JSONParser jsonParser = new JSONParser();
-    private static final String REG_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
-    private static final String LOG_URL = "http://192.168.1.3:7070/askJson/askjson_login.php";
+    private static final String URL = "http://192.168.1.3:7070/askJson/askjson_input.php";
+//    private static final String REG_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
+//    private static final String LOG_URL = "http://192.168.1.3:7070/askJson/askjson_login.php";
     private static final String REG_MESSAGE = "Register new  User...Please wait";
     private static final String LOG_MESSAGE = "Login...Please wait";
     private static final String TAG_MESSAGE = "message"; 
     private static final String TAG_JSON = "askJSON";
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_LOG = "login"; 
+    private static final String TAG_REG = "register"; 
+    private static final String TAG_BTN = "button"; 
     //felds of database User
     private static final String TAG_NAME = "name"; 
     private static final String TAG_PWD = "password";
@@ -98,17 +104,15 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
-                    url=LOG_URL;msg=LOG_MESSAGE;
+                    jsnObj.put(TAG_BTN,TAG_LOG);
+                    msg=LOG_MESSAGE;
                     HttpIO astask= new HttpIO((AsyncTaskListener)this);
+                    astask.GetTask(this);
                     astask.execute();// = new JsonViaHttpIO();
-                    while(astask.isAsTaskRunning()){};//Wait for the end of the async task
+                   // while(astask.isAsTaskRunning()){};//Wait for the end of the async task
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
-                    }
-                if(success==1){
-                    Intent personIntent = new Intent(MainActivity.this, AskJson.class);
-                    MainActivity.this.startActivity(personIntent);
                     }
                 break;
             //Button Register pressed    
@@ -118,8 +122,11 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     jsnObj=new JSONObject();
                     jsnObj.put(TAG_NAME,edtName.getText().toString());
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
-                    url=REG_URL;msg=REG_MESSAGE;
-                    new HttpIO((AsyncTaskListener)this).execute();
+                    jsnObj.put(TAG_BTN,TAG_REG);
+                     msg=REG_MESSAGE;
+                    HttpIO astask= new HttpIO((AsyncTaskListener)this);
+                    astask.GetTask(this);
+                    astask.execute();// = new JsonViaHttpIO();
                     }
                 catch(JSONException e ){
                     e.printStackTrace();
@@ -128,20 +135,6 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                 break;
             
             }
-        }
-/********************************************************************
- * 
- * AsyncTask methods
- * @return
- * 
- ********************************************************************/
-    
-    @Override
-       public Object onRetainNonConfigurationInstance() {
-        if (mHttpIO != null) {
-            mHttpIO.detach();
-            }
-        return(mHttpIO);
         }
 /********************************************************************
  * 
@@ -159,7 +152,20 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
  * 
  ********************************************************************/
 
-    public void onTaskFinished(String result) {
+    public void onTaskFinished(String response) {        
+        try {
+            jsnObj=new JSONObject(response);
+            success = jsnObj.getInt(TAG_SUCCESS);
+            ImageToast(jsnObj.getString(TAG_MESSAGE));
+    //      ImageToast(response);
+            if(success==1&&jsnObj.getString(TAG_BTN).compareTo(TAG_LOG)==0){
+                Intent personIntent = new Intent(MainActivity.this, AskJson.class);
+                MainActivity.this.startActivity(personIntent);
+            }
+        } 
+        catch (JSONException ex) {
+            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
 /********************************************************************
@@ -177,27 +183,17 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
    
     class HttpIO extends AsyncTask<String, String, String> {
         private final AsyncTaskListener listener;
+        private MainActivity mActivity = null;
+        private AsyncTaskListener callback;
+
         public HttpIO(AsyncTaskListener listener) {
             this.listener = listener;
             }
-        private MainActivity mActivity = null;
-        private boolean executed=true;
-        private AsyncTaskListener callback;
-
         public void GetTask(MainActivity act){
             this.mActivity = act;
             this.callback = (AsyncTaskListener)act;
-        }
-        public boolean isAsTaskRunning(){
-            return executed;   
-            };
-        void attach(MainActivity a) {
-            mActivity = a;
             }
-        void detach() {
-            mActivity = null;
-            }
-
+   
 /********************************************************************
  * 
  * onPreExecute()
@@ -207,7 +203,6 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
  ********************************************************************/
         @Override
         protected void onPreExecute() {
-            executed=true;
             super.onPreExecute();
             
             
@@ -232,18 +227,17 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
 	@Override
 	protected String doInBackground(String... args) {
             try {
-                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                 params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
-                JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
+                String btnname=jsnObj.getString(TAG_BTN);
+                JSONObject json = jsonParser.makeHttpRequest(URL, "POST", params);
                  // finish();
-                success = json.getInt(TAG_SUCCESS);
-                executed=false;
-                return json.getString(TAG_MESSAGE);
+                json.put(TAG_BTN,btnname);
+                return json.toString();
                 }
             catch (Exception e) {
                 e.printStackTrace();
                 } 
-            executed=false;
             return null;
             }
         
@@ -262,7 +256,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                 pDialog.dismiss();
                 }
             if (response != null){
-                ImageToast(response);
+                callback.onTaskFinished(response);
                 }
             } 
     

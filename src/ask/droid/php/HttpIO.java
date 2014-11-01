@@ -50,7 +50,7 @@ import org.json.JSONObject;
     //JSON
     private  String TAG_MESSAGE;//message 
     private  String VAL_URL;//url
-    private static final String TAG_JSON = "askJSON";
+    private  String TAG_JSON;
  
     JSONParser jsonParser = new JSONParser();
 
@@ -72,6 +72,7 @@ import org.json.JSONObject;
            res = activity.getResources();
            this.VAL_URL=res.getString(R.string.val_url);
            this.TAG_MESSAGE=res.getString(R.string.tag_message);
+           this.TAG_JSON=res.getString(R.string.tag_json);
        } 
                
     

@@ -40,7 +40,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private  String VAL_BTNLOG;//value "login" 
     private  String VAL_BTNREG;//value "register"
     private  String TAG_MESSAGE;//tag "message" 
-    private  String VAL_MESSAGELOG;//value "Login...Please wait" 
+    private  String VAL_MESSAGELOG; //value "Login...Please wait" 
     private  String VAL_MESSAGEREG;//value "Register new  User...Please wait" 
     private  String TAG_SUCCESS;//tag "success"
     private  String TAG_NAME;//tag "name"

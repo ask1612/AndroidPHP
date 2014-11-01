@@ -81,6 +81,7 @@ public final class R {
         public static final int street=0x7f05000a;
         public static final int surname=0x7f050008;
         public static final int tag_btn=0x7f050016;
+        public static final int tag_json=0x7f050019;
         public static final int tag_message=0x7f050012;
         public static final int tag_name=0x7f050017;
         public static final int tag_pwd=0x7f050018;

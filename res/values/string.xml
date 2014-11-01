@@ -31,6 +31,7 @@
 <string name="tag_btn">button</string>
 <string name="tag_name">name</string>
 <string name="tag_pwd">password</string>
+<string name="tag_json">askJSON</string>
 
 
 

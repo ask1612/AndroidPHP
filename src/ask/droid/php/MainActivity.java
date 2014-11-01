@@ -49,8 +49,6 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private String index="0";  
     JSONParser jsonParser = new JSONParser();
     private static final String URL = "http://192.168.1.3:7070/askJson/askjson_input.php";
-//    private static final String REG_URL = "http://192.168.1.3:7070/askJson/askjson_register.php";
-//    private static final String LOG_URL = "http://192.168.1.3:7070/askJson/askjson_login.php";
     private static final String REG_MESSAGE = "Register new  User...Please wait";
     private static final String LOG_MESSAGE = "Login...Please wait";
     private static final String TAG_MESSAGE = "message"; 
@@ -106,8 +104,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     jsnObj.put(TAG_BTN,TAG_LOG);
                     msg=LOG_MESSAGE;
-                    HttpIO astask= new HttpIO((AsyncTaskListener)this);
-                    astask.GetTask(this);
+                    HttpIO astask= new HttpIO(this);
                     astask.execute();// = new JsonViaHttpIO();
                    // while(astask.isAsTaskRunning()){};//Wait for the end of the async task
                     }
@@ -124,8 +121,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     jsnObj.put(TAG_PWD,edtPassword.getText().toString());
                     jsnObj.put(TAG_BTN,TAG_REG);
                      msg=REG_MESSAGE;
-                    HttpIO astask= new HttpIO((AsyncTaskListener)this);
-                    astask.GetTask(this);
+                    HttpIO astask= new HttpIO(this);
                     astask.execute();// = new JsonViaHttpIO();
                     }
                 catch(JSONException e ){
@@ -182,16 +178,11 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
  ********************************************************************/
    
     class HttpIO extends AsyncTask<String, String, String> {
-        private final AsyncTaskListener listener;
-        private MainActivity mActivity = null;
         private AsyncTaskListener callback;
-
-        public HttpIO(AsyncTaskListener listener) {
-            this.listener = listener;
-            }
-        public void GetTask(MainActivity act){
-            this.mActivity = act;
+        //constructor
+        public HttpIO(MainActivity act) {
             this.callback = (AsyncTaskListener)act;
+            
             }
    
 /********************************************************************

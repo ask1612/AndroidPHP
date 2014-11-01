@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
 /********************************************************************
  * 
  * onCreate()
- * gets called when the activity is first created.
+ * gets called when the activity is first  created.
  * @param icicle
  * 
  ********************************************************************/

@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  * 
  * Main  activity.
  * 
+ * 
  ********************************************************************/
 public class MainActivity extends Activity implements AsyncTaskListener, OnClickListener{
     private static  Resources res;
@@ -72,7 +73,9 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
 /********************************************************************
  * 
  * onClick()
- * gets  called  when any button is pressed
+ * Method is invoked when pressed one of the buttons "Register" or "Login",
+ * creates the JSON object and pass it to the async task HttpIO via 
+ * the AsyncTaskListener interface method onTaskStarted(). 
  * @param v
  * 
  ********************************************************************/
@@ -80,7 +83,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            //Button Login is pressed
+            //Button Login  pressed
             case R.id.btnLogin:
                 try{
                     jsnObj=new JSONObject();
@@ -107,26 +110,27 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     }
                 break;
             }
-        HttpIO astask= new HttpIO(MainActivity.this);
-        astask.execute();
+        new HttpIO(MainActivity.this).execute();
         }
+
 /********************************************************************
  * 
- * interface AsyncTaskListener
  * onTaskStarted()
+ * implements the  AsyncTaskListener interface  method   
+ * @return: outputs an JSON Object. 
  * 
  ********************************************************************/
-
     public JSONObject onTaskStarted() {
         return jsnObj;
         }
+
 /********************************************************************
  * 
- * interface AsyncTaskListener
  * onTaskFinished()
+ * implements the  AsyncTaskListener interface  method   
+ * @param response:  inputs a string of an  JSON object
  * 
  ********************************************************************/
-
     public void onTaskFinished(String response) {        
         try {
             JSONObject jsnObjResponse=new JSONObject(response);
@@ -142,8 +146,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
         }
 /********************************************************************
  * 
- * interface AsyncTaskListener
- * onTaskFinished()
+ * getResourcesStrings()
  * 
  ********************************************************************/
     public  void getResourcesStrings(){

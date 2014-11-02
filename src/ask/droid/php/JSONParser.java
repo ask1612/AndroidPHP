@@ -24,6 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
  
 import android.util.Log;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  @Class JSONParser
@@ -65,18 +69,18 @@ public class JSONParser {
     // This function make  http request by  POST or GET method,
     //passes to url   parameters  TAG_JSON and JSON object 
     // and return JSON object    from url  .
-    public JSONObject
-        makeHttpRequest(String url, String method,List<NameValuePair> params) {
-        // Making HTTP request
+    public JSONObject makeHttpRequest(String url,
+    String method,List<NameValuePair> params) throws IOException, JSONException {
         try {
+            // Making HTTP request
             //DefaultHttpClient is  used to make remote HTTP requests.
             DefaultHttpClient httpClient = new DefaultHttpClient();
             //Connecting via POST method
             if(method == "POST"){
                 HttpPost httpPost = new HttpPost(url);
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
+                 httpPost.setEntity(new UrlEncodedFormEntity(params));
                 httpResponse = httpClient.execute(httpPost);
-                }
+                } 
             //Connecting via GET method
             else if(method == "GET"){
                 String paramString = URLEncodedUtils.format(params, "utf-8");
@@ -95,24 +99,19 @@ public class JSONParser {
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
+                    sb.append(line).append("\n");
                     }
                 inputstream.close();
                 json = sb.toString();
                 }
-        }
-        catch (Exception e) {
-            // if any error, then print the stack trace.
-           Log.e(TAG_HTTPREQUEST, "Error in http connection" + e.toString());
-            }       
-        // try parse the string to a JSON object
-        try {
-            jObj = new JSONObject(json);
-            } 
-        catch (JSONException e) {
-            Log.e(TAG_JSONPARSER, "Error parsing data " + e.toString());
+           jObj = new JSONObject(json);
+           }
+        catch (UnsupportedEncodingException ex)   {
+            Logger.getLogger(JSONParser.class.getName()).log(Level.SEVERE, null, ex);
             }
- 
+        catch (JSONException ex) {
+            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         // return JSON object
         return jObj;
  

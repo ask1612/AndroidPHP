@@ -95,8 +95,9 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     
 /********************************************************************
  * 
- * interface AsyncTaskListener
  * onTaskStarted()
+ * implements the  AsyncTaskListener interface  method   
+ * @return: outputs an JSON Object. 
  * 
  ********************************************************************/
 
@@ -105,8 +106,9 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         }
 /********************************************************************
  * 
- * interface AsyncTaskListener
  * onTaskFinished()
+ * implements the  AsyncTaskListener interface  method.
+ * @param response:  inputs a string of an  JSON object
  * 
  ********************************************************************/
 

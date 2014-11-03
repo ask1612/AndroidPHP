@@ -1,10 +1,11 @@
 /**
  * I do not sleep tonight... I may not ever...
  * JSONParser.java
- * @author ASK
+ * Copyright (C) 2014 The Android Open Source Project 
+ * @author ASK 
  * https://github.com/ask1612/AndroidPHP.git
  * 
-*/
+ */
 package ask.droid.php;
 
 import java.io.BufferedReader;
@@ -23,39 +24,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
  
-import android.util.Log;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *  @Class JSONParser
- * {  
- * Class to sent http request to http Server,
- * receive  response from http Server,
- * convert  received response to String
- * create new JSON object from String
- * parse JSON object,
- * return JSON Object
- * 
- * @private members of class
- *          @static InputStream;
- *          @static JSONObject;
- *          @static String;
- *          @static final String;
- *          @static final String;
- * 
- * 
- * @public method of class:
- *           @JSONParser(); 
- *           @JSONObject makeHttpRequest(String,String,List<>);
- * }  
- * */
-
- 
+ * Class to sent http request to http Server,receive  response from http Server,
+ * convert  received response to String , create new JSON object from String,
+ * parse JSON object, return JSON Object
+ */
 public class JSONParser {
- 
     private static InputStream inputstream = null;
     private static JSONObject jObj = null;
     private static String json = "";
@@ -65,12 +44,20 @@ public class JSONParser {
     // constructor
     public JSONParser() {
     }
- 
-    // This function make  http request by  POST or GET method,
-    //passes to url   parameters  TAG_JSON and JSON object 
-    // and return JSON object    from url  .
+    /**
+     * This function makes  http request by  POST or GET method,
+     * passes to a given server    parameters  TAG_JSON and JSON object as 
+     * string , gets a string from http server, convert it to thr JSON object
+     * and return JSON object. The url argument must specify an absolute
+     * {@link URL}. 
+     * 
+     * @param url           an absolute URL        
+     * @param method        POST or GET http request method 
+     * @param params        tag  and JSON object as string 
+     * @return              JSON object 
+     */
     public JSONObject makeHttpRequest(String url,
-    String method,List<NameValuePair> params) throws IOException, JSONException {
+        String method,List<NameValuePair> params) throws IOException, JSONException {
         try {
             // Making HTTP request
             //DefaultHttpClient is  used to make remote HTTP requests.
@@ -80,14 +67,14 @@ public class JSONParser {
                 HttpPost httpPost = new HttpPost(url);
                  httpPost.setEntity(new UrlEncodedFormEntity(params));
                 httpResponse = httpClient.execute(httpPost);
-                } 
+            } 
             //Connecting via GET method
             else if(method == "GET"){
                 String paramString = URLEncodedUtils.format(params, "utf-8");
                 url += "?" + paramString;
                 HttpGet httpGet =  new HttpGet(url);
                 httpResponse = httpClient.execute(httpGet);
-                }
+            }
             HttpEntity httpEntity = httpResponse.getEntity();
             if(httpEntity!=null) {
                 inputstream = httpEntity.getContent();
@@ -100,18 +87,18 @@ public class JSONParser {
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line).append("\n");
-                    }
+                }
                 inputstream.close();
                 json = sb.toString();
-                }
+            }
            jObj = new JSONObject(json);
-           }
+        }
         catch (UnsupportedEncodingException ex)   {
             Logger.getLogger(JSONParser.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
         catch (JSONException ex) {
             Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
         // return JSON object
         return jObj;
  

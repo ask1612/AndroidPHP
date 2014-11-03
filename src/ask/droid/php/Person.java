@@ -1,9 +1,9 @@
 /**
  * I do not sleep tonight... I may not ever...
- * Person.java
- * Copyright (C) 2014 The Android Open Source Project 
- * @author ASK
- * https://github.com/ask1612/AndroidPHP.git
+ *
+ * Person.java Copyright (C) 2014 The Android Open Source Project
+ *
+ * @author ASK https://github.com/ask1612/AndroidPHP.git
  */
 
 

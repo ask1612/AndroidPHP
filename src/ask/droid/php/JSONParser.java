@@ -30,9 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class to sent http request to http Server,receive  response from http Server,
- * convert  received response to String , create new JSON object from String,
- * parse JSON object, return JSON Object
+ * Class to send a  request to a http Server,receive a response from the http
+ * Server, convert the received response to a String , create a  new JSON object
+ * from the String, parse the JSON object, return the JSON Object
  */
 public class JSONParser {
     private static InputStream inputstream = null;
@@ -45,10 +45,10 @@ public class JSONParser {
     public JSONParser() {
     }
     /**
-     * This function makes  http request by  POST or GET method,
+     * This function makes a http request by  POST or GET method,
      * passes to a given server    parameters  TAG_JSON and JSON object as 
-     * string , gets a string from http server, convert it to thr JSON object
-     * and return JSON object. The url argument must specify an absolute
+     * string , gets a string from http server, converts it to a JSON object
+     * and return the JSON object. The url argument must specify an absolute
      * {@link URL}. 
      * 
      * @param url           an absolute URL        

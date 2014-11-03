@@ -10,6 +10,7 @@ package ask.droid.php;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +27,24 @@ import android.view.View.OnClickListener;
 
 /**
  * Class AskJson is an Activity that intendet to input data of any person. This
- * data is written into the MySql database
+ * data is written into a  MySql database
  */
 public class AskJson extends Activity implements AsyncTaskListener, OnClickListener {
-
+    private static final String TAG = "AskJson"; 
     private EditText edtName, edtSurname, edtCity, edtStreet, edtBuild, edtFlat;
     private Button btnSave;
     private JSONObject jsnObj;
-    private Person person;
+    private final Person person;
     private static final String TAG_MESSAGE = "message";
+    
+    
+    /**
+     * constructor
+     */
+    public AskJson() {
+        this.jsnObj = new JSONObject();
+        this.person = new Person();
+    }
 
     /**
      *
@@ -69,12 +79,13 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         switch (v.getId()) {
             //Button Save is pressed
             case R.id.btnSave:
+                Log.d( TAG, "Handling clicked button" ); 
                 person.setName(edtName.getText().toString());
                 person.setSurname(edtSurname.getText().toString());
                 person.getAddress().setCity(edtCity.getText().toString());
                 person.getAddress().setStreet(edtStreet.getText().toString());
-                // person.getAddress().setBuild(Integer());
-                person.getAddress().getFlat();
+                person.getAddress().setBuild(edtBuild.getInputType());
+                person.getAddress().setFlat(edtFlat.getInputType());
                 break;
 
         }

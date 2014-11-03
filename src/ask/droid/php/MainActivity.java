@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
@@ -109,7 +110,8 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
             //Button Register pressed    
             case R.id.btnRegister:
                 try {
-                    jsnObj = new JSONObject();
+               Log.d( "MY HELP", "Handling clicked button" ); 
+                     jsnObj = new JSONObject();
                     jsnObj.put(TAG_NAME, edtName.getText().toString());
                     jsnObj.put(TAG_PWD, edtPassword.getText().toString());
                     jsnObj.put(TAG_BTN, VAL_BTNREG);

@@ -35,12 +35,12 @@ import java.util.logging.Logger;
  * transfers the JSON object to the background thread via the OnTaskStarted()
  * method of this interface. Async task sends this data to a http server. The
  * http server attemps to connect to the MySql server. When the connection is
- * success data is written or read into/from the database. When the database IO
+ * success data is written or read in/out the database. When the database I/O
  * operations are ended the http server returns back to the Android application
- * a block of information as a string of JSON object . This block consists of 2
+ * a block of information as a string of an JSON object . This block consists of 2
  * fields:<success> and  <message>. The field  <success>
- * indicates whether the IO operation was successful or no . If the field
- * <success> is 1 the database IO operation was successful otherwise no.
+ * indicates whether the I/O operation was successful or no . If the field
+ * <success> is 1 the database I/O operation was successful otherwise no.
  * Depending on this result the server generates a message and returns it to the
  * async task. The async task transfers it via interface method onTaskFinished()
  * to the MainActivity thread.Depending on this information MainActivity starts
@@ -86,8 +86,8 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
 
     /**
      * Method is invoked when one of the buttons <Register> or <Login> pressed,
-     * creates the JSON object and pass it to the async task HttpIO via the
-     * AsyncTaskListener interface method onTaskStarted().
+     * creates an JSON object and pass it to the async task via the
+     * AsyncTaskListener interface .
      *
      * @param v View
      */

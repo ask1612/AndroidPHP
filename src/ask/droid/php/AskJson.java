@@ -9,6 +9,7 @@
 package ask.droid.php;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.view.View.OnClickListener;
  * data is written into a  MySql database
  */
 public class AskJson extends Activity implements AsyncTaskListener, OnClickListener {
+    private static Resources res;
     private static final String TAG = "AskJson"; 
     private EditText edtName, edtSurname, edtCity, edtStreet, edtBuild, edtFlat;
     private Button btnSave;
@@ -37,6 +39,16 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     private final Person person;
     private static final String TAG_MESSAGE = "message";
     
+     //JSON
+    private String TAG_PSNNAME; 
+    private String TAG_SURNAME; 
+    private String TAG_ADDRESS; 
+    private String TAG_CITY; 
+    private String TAG_STREET; 
+    private String TAG_BUILD; 
+    private String TAG_FLAT; 
+    private String VAL_BTNSAVE; 
+    private String VAL_MESSAGESAVE; 
     
     /**
      * constructor
@@ -66,6 +78,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         Log.d( TAG, "onCreate started" ); 
+        getResourcesStrings();
    }
 
     /**
@@ -86,14 +99,14 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
                 person.getAddress().setStreet(edtStreet.getText().toString());
                 person.getAddress().setBuild(Integer.parseInt(edtBuild.getText().toString()));
                 person.getAddress().setFlat(Integer.parseInt(edtFlat.getText().toString()));
-                Log.d( TAG, "Handling clicked button."+
-                     " Person name is "+person.getName()+"\n"+ 
-                     " Person surname is "+person.getSurname()+"\n"+
-                     " Person address is\n" +   
-                     " City    "+person.getAddress().getCity()+"\n"+ 
-                     " Street  "+person.getAddress().getStreet()+"\n"+ 
-                     " Build   "+Integer.toString(person.getAddress().getBuild())+"\n"+ 
-                     " Flat    "+Integer.toString(person.getAddress().getFlat()) 
+                Log.d( TAG, "Save  button pressed."+
+                     " Person name   :"+person.getName()+"\n"+ 
+                     " Person surname: "+person.getSurname()+"\n"+
+                     " Person address __________________________\n" +   
+                     " City    :"+person.getAddress().getCity()+"\n"+ 
+                     " Street  :"+person.getAddress().getStreet()+"\n"+ 
+                     " Build   :"+Integer.toString(person.getAddress().getBuild())+"\n"+ 
+                     " Flat    :"+Integer.toString(person.getAddress().getFlat()) 
                 ); 
                 break;
 
@@ -151,5 +164,33 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         toast.setView(layout);
         toast.show();
     }
+
+    
+    /**
+     *
+     * Get strings from resources
+     *
+     */
+    public void getResourcesStrings() {
+        res = getResources();
+        this.TAG_PSNNAME = res.getString(R.string.tag_psnname);
+        this.TAG_SURNAME = res.getString(R.string.tag_surname);
+        this.TAG_ADDRESS = res.getString(R.string.tag_address);
+        this.TAG_CITY = res.getString(R.string.tag_city);
+        this.TAG_STREET = res.getString(R.string.tag_street);
+        this.TAG_BUILD = res.getString(R.string.tag_build);
+        this.TAG_FLAT = res.getString(R.string.tag_flat);
+        this.VAL_BTNSAVE = res.getString(R.string.val_btnsave);
+        this.VAL_MESSAGESAVE = res.getString(R.string.val_messagesave);
+
+    }
+    /**
+     * Write to  JSON object
+     */
+       void  writeJSON() {
+           jsnObj=new JSONObject();
+           
+                   
+        }
 
 };

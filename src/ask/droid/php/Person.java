@@ -9,14 +9,22 @@
 
 package ask.droid.php;
 /**
- * Person is class to work with data any person. It has fields name,surname and
- * address. It allows to set and get this values.
+ * Person is class to work with data any person. It has fields <name>,<surname>
+ * and  <address>. It allows to set and get values of this fields.
  */
 public class Person {
     private   String name;
-    private  String surname;
+    private  String  surname;
     private  Address address;
-    public Person(){}; //constructor
+    
+    /**
+     * constructor
+     */
+    public Person(){
+        this.name=new String();
+        this.surname=new String();
+        this.address=new Address();
+    }; 
     public String getName(){
         return name;
     }
@@ -38,14 +46,21 @@ public class Person {
     
     /**
     * Class Address works with an address of person. It allows to set and get 
-    * the person adress
+    * the adress of person
     */
     public class Address {
         private  String city;
         private String street;
         private int build;
         private int flat;
-        public Address(){};//constructor
+        
+        /**
+         * constructor 
+         */
+        Address(){
+            this.city=new String();
+            this.street=new String();
+        }
         public String getCity(){
             return city;
         }

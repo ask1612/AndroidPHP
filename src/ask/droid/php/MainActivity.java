@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * MainActivity is the first activity that appears when the application is
  * launched. This activity consists of 3 text labels, 2 edit views and 2
  * buttons. MainActivity is intended to register a new user or login with a
- * registered user to the MySql database. When the button <Register> or <Login>
+ * registered user to a MySql database. When the button <Register> or <Login>
  * is pressed the application creates an JSON object,reads data from edit views
  * and writes it into this JSON object , creates an async task object HttpIO and
  * invokes its execute() method . At this moment MainActivity launches the async
@@ -64,7 +64,6 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private String TAG_SUCCESS;//tag "success"
     private String TAG_NAME;//tag "name"
     private String TAG_PWD;//tag "password"
-
     /**
      *
      * Gets called when the activity is first created.

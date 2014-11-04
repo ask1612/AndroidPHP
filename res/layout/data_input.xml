@@ -95,7 +95,7 @@
         android:textSize="14sp"
         android:textColor="@color/black"/>
  
-<!--Name edit -->    
+<!--Name edit view-->    
 <EditText
         android:id="@+id/edtName"
         android:layout_width="200dp"
@@ -106,7 +106,7 @@
         android:maxLength="50"
         android:textSize="15sp"
         android:textColor="@color/black"/>
-<!--Surname edit -->    
+<!--Surname edit view-->    
 <EditText
         android:id="@+id/edtSurname"
         android:layout_width="200dp"
@@ -117,7 +117,7 @@
         android:maxLength="50"
         android:textSize="15sp"
         android:textColor="@color/black"/>
-<!--City edit -->    
+<!--City edit view-->    
 <EditText
         
         android:id="@+id/edtCity"
@@ -129,7 +129,7 @@
         android:maxLength="50"
         android:textSize="15sp"
         android:textColor="@color/black"/>
-<!-- Street edit -->    
+<!-- Street edit view-->    
 <EditText
         android:id="@+id/edtStreet"
         android:layout_width="200dp"
@@ -140,7 +140,7 @@
         android:maxLength="50"
         android:textSize="15sp"
         android:textColor="@color/black"/>
-<!--Build edit -->    
+<!--Build edit view-->    
 <EditText
         android:id="@+id/edtBuild"
         android:layout_width="200dp"
@@ -151,7 +151,7 @@
         android:maxLength="3"
         android:textSize="15sp"
         android:textColor="@color/black"/>
-<!--Flat edit -->    
+<!--Flat edit view-->    
 <EditText
         android:id="@+id/edtFlat"
         android:layout_width="200dp"

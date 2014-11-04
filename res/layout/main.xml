@@ -43,7 +43,7 @@
         android:textColor="@color/black"
     />
 
-<!--Edit of UserName-->
+<!--UserName edit view -->
 
     <EditText
         android:id="@+id/edtUserName"
@@ -57,7 +57,7 @@
         android:inputType="text"
     />
 
-<!--Edit of UserPassword-->
+<!-- UserPassword edit view -->
 
     <EditText
         android:id="@+id/edtUserPassword"

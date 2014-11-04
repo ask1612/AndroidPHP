@@ -65,7 +65,8 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         edtFlat = (EditText) findViewById(R.id.edtFlat);
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
-    }
+        Log.d( TAG, "onCreate started" ); 
+   }
 
     /**
      *
@@ -79,13 +80,21 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         switch (v.getId()) {
             //Button Save is pressed
             case R.id.btnSave:
-                Log.d( TAG, "Handling clicked button" ); 
                 person.setName(edtName.getText().toString());
                 person.setSurname(edtSurname.getText().toString());
                 person.getAddress().setCity(edtCity.getText().toString());
                 person.getAddress().setStreet(edtStreet.getText().toString());
-                person.getAddress().setBuild(edtBuild.getInputType());
-                person.getAddress().setFlat(edtFlat.getInputType());
+                person.getAddress().setBuild(Integer.parseInt(edtBuild.getText().toString()));
+                person.getAddress().setFlat(Integer.parseInt(edtFlat.getText().toString()));
+                Log.d( TAG, "Handling clicked button."+
+                     " Person name is "+person.getName()+"\n"+ 
+                     " Person surname is "+person.getSurname()+"\n"+
+                     " Person address is\n" +   
+                     " City    "+person.getAddress().getCity()+"\n"+ 
+                     " Street  "+person.getAddress().getStreet()+"\n"+ 
+                     " Build   "+Integer.toString(person.getAddress().getBuild())+"\n"+ 
+                     " Flat    "+Integer.toString(person.getAddress().getFlat()) 
+                ); 
                 break;
 
         }

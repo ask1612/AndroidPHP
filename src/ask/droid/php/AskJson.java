@@ -40,6 +40,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     private static final String TAG_MESSAGE = "message";
     
      //JSON
+    private String TAG_BTN;//tag "button" 
     private String TAG_PSNNAME; 
     private String TAG_SURNAME; 
     private String TAG_ADDRESS; 
@@ -54,7 +55,6 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
      * constructor
      */
     public AskJson() {
-        this.jsnObj = new JSONObject();
         this.person = new Person();
     }
 
@@ -78,7 +78,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         Log.d( TAG, "onCreate started" ); 
-        getResourcesStrings();
+        //getResourcesStrings();
    }
 
     /**
@@ -180,6 +180,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         this.TAG_STREET = res.getString(R.string.tag_street);
         this.TAG_BUILD = res.getString(R.string.tag_build);
         this.TAG_FLAT = res.getString(R.string.tag_flat);
+        this.TAG_BTN = res.getString(R.string.tag_btn);
         this.VAL_BTNSAVE = res.getString(R.string.val_btnsave);
         this.VAL_MESSAGESAVE = res.getString(R.string.val_messagesave);
 
@@ -188,7 +189,26 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
      * Write to  JSON object
      */
        void  writeJSON() {
-           jsnObj=new JSONObject();
+        try {
+            jsnObj=new JSONObject();
+            jsnObj.put(TAG_PSNNAME,person.getName());
+            jsnObj.put(TAG_SURNAME,person.getSurname());
+            //Address
+            JSONObject jsnAddress=new JSONObject();
+            jsnAddress.put(TAG_CITY,person.getAddress().getCity());
+            jsnAddress.put(TAG_STREET,person.getAddress().getStreet());
+            jsnAddress.put(TAG_BUILD,person.getAddress().getBuild());
+            jsnAddress.put(TAG_FLAT,person.getAddress().getFlat());
+            jsnObj.put(TAG_ADDRESS, jsnAddress);
+            jsnObj.put(TAG_BTN, VAL_BTNSAVE);
+            jsnObj.put(TAG_MESSAGE, VAL_MESSAGESAVE);
+            Log.d( TAG, jsnObj.toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+           
+           
            
                    
         }

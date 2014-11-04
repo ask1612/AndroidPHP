@@ -96,7 +96,7 @@ class HttpIO extends AsyncTask<String, String, String> {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();//shows progress dialog
-        jsnObj.remove(TAG_MESSAGE);
+        jsnObj.remove(TAG_MESSAGE);//do not send message to the server
     }
 
     /**

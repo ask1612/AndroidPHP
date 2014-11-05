@@ -130,6 +130,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
                         + " Build   :" + Integer.toString(person.getAddress().getBuild()) + "\n"
                         + " Flat    :" + Integer.toString(person.getAddress().getFlat())
                 );
+                clearEdt();
                 break;
 
         }
@@ -223,5 +224,17 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    /**
+     * Clear edit view
+     */
+    void clearEdt(){
+                edtName.getText().clear();
+                edtSurname.getText().clear();
+                edtCity.getText().clear();
+                edtStreet.getText().clear();
+                edtBuild.getText().clear();
+                edtFlat.getText().clear();
+    }
+            
 
 };

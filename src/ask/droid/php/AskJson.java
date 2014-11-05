@@ -26,42 +26,44 @@ import org.json.JSONArray;
 
 /**
  * Class AskJson is an Activity that intendet to input data of any person. This
- * data is written into a  MySql database
+ * data is written into a MySql database
  */
 public class AskJson extends Activity implements AsyncTaskListener, OnClickListener {
+
     private static Resources res;
-    private static final String TAG = "AskJson"; 
+    private static final String TAG = "AskJson";
     private EditText edtName, edtSurname, edtCity, edtStreet, edtBuild, edtFlat;
     private Button btnSave;
     private JSONObject jsnObj;
-    JSONArray jsnArr ;
-   // private Person[] person;
+    JSONArray jsnArr;
+    // private Person[] person;
     private int index;
     private static final int SIZE = 2;
-    private final  Person person;
+    private final Person person;
   //  List<Person> personList; 
-     //JSON
+    //JSON
     private String TAG_BTN;//tag "button" 
-    private String TAG_PSNNAME; 
-    private String TAG_SURNAME; 
-    private String TAG_ADDRESS; 
-    private String TAG_CITY; 
-    private String TAG_STREET; 
-    private String TAG_BUILD; 
-    private String TAG_FLAT; 
-    private String VAL_BTNSAVE; 
-    private String VAL_MESSAGESAVE; 
-    private String TAG_MESSAGE; 
-    private String TAG_DATA; 
-    
+    private String TAG_PSNNAME;
+    private String TAG_SURNAME;
+    private String TAG_ADDRESS;
+    private String TAG_CITY;
+    private String TAG_STREET;
+    private String TAG_BUILD;
+    private String TAG_FLAT;
+    private String VAL_BTNSAVE;
+    private String VAL_MESSAGESAVE;
+    private String TAG_MESSAGE;
+    private String TAG_DATA;
+
     /**
      * constructor
      */
     public AskJson() {
+        this.jsnObj = new JSONObject();
         this.person = new Person();
 //        this.personList = new ArrayList<Person>();
-        this.jsnArr =new JSONArray();
-        this.index=0;
+        this.jsnArr = new JSONArray();
+        this.index = 0;
     }
 
     /**
@@ -83,9 +85,9 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         edtFlat = (EditText) findViewById(R.id.edtFlat);
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
-        Log.d( TAG, "onCreate started" ); 
+        Log.d(TAG, "onCreate started");
         getResourcesStrings();
-   }
+    }
 
     /**
      *
@@ -97,45 +99,43 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
- //Button Save is pressed 
-             case R.id.btnSave: 
-                 Log.d( TAG, "onClick Button started" ); 
-                 person.setName(edtName.getText().toString()); 
-                 person.setSurname(edtSurname.getText().toString()); 
-                 person.getAddress().setCity(edtCity.getText().toString()); 
-                 person.getAddress().setStreet(edtStreet.getText().toString());
-                 String s=edtBuild.getText().toString();
-                 if(s.isEmpty()){
-                 person.getAddress().setBuild(0); 
-                 }
-                 else {
-                 person.getAddress().setBuild(Integer.parseInt(s)); 
-                     
-                 }
-                 s=edtFlat.getText().toString();
-                 if(s.isEmpty()){
-                 person.getAddress().setFlat(0); 
-                 }
-                 else {
-                 person.getAddress().setFlat(Integer.parseInt(s)); 
-                 }
-                 
-//                 person.getAddress().setFlat(Integer.parseInt(edtFlat.getText().toString())); 
-                 Log.d( TAG, "Save  button pressed."+ 
-                      " Person name   :"+person.getName()+"\n"+  
-                      " Person surname: "+person.getSurname()+"\n"+ 
-                      " Person address __________________________\n" +    
-                      " City    :"+person.getAddress().getCity()+"\n"+  
-                      " Street  :"+person.getAddress().getStreet()+"\n"+  
-                      " Build   :"+Integer.toString(person.getAddress().getBuild())+"\n"+  
-                      " Flat    :"+Integer.toString(person.getAddress().getFlat())  
-                 );  
-                 break; 
+            //Button Save is pressed 
+            case R.id.btnSave:
+                Log.d(TAG, "onClick Button started");
+                person.setName(edtName.getText().toString());
+                person.setSurname(edtSurname.getText().toString());
+                person.getAddress().setCity(edtCity.getText().toString());
+                person.getAddress().setStreet(edtStreet.getText().toString());
+                String s = edtBuild.getText().toString();
+                if (s.isEmpty()) {
+                    person.getAddress().setBuild(0);
+                } else {
+                    person.getAddress().setBuild(Integer.parseInt(s));
 
+                }
+                s = edtFlat.getText().toString();
+                if (s.isEmpty()) {
+                    person.getAddress().setFlat(0);
+                } else {
+                    person.getAddress().setFlat(Integer.parseInt(s));
+                }
+
+//                 person.getAddress().setFlat(Integer.parseInt(edtFlat.getText().toString())); 
+                Log.d(TAG, "Save  button pressed.\n"
+                        + " Person name   :" + person.getName() + "\n"
+                        + " Person surname: " + person.getSurname() + "\n"
+                        + " Person address __________________________\n"
+                        + " City    :" + person.getAddress().getCity() + "\n"
+                        + " Street  :" + person.getAddress().getStreet() + "\n"
+                        + " Build   :" + Integer.toString(person.getAddress().getBuild()) + "\n"
+                        + " Flat    :" + Integer.toString(person.getAddress().getFlat())
+                );
+                break;
 
         }
-        Log.d( TAG, "onClick Button Ended" ); 
+        Log.d(TAG, "onClick Button Ended");
         putJSONArr();
+        //Log.d(TAG, jsnArr.toString() + "\n");
         index++;
         if (index == SIZE) {
             try {
@@ -146,7 +146,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
                 jsnObj.put(TAG_DATA, jsnArr);
                 this.jsnArr = new JSONArray();
                 index = 0;
-                Log.d(TAG, jsnObj.toString());
+          //      Log.d(TAG, jsnObj.toString());
                 new HttpIO(AskJson.this).execute();//request to http
             } catch (JSONException ex) {
                 Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,8 +177,6 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         jsnObj = new JSONObject();
     }
 
-   
-    
     /**
      *
      * Get strings from resources
@@ -200,6 +198,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         this.TAG_DATA = res.getString(R.string.tag_data);
 
     }
+
     /**
      * Writing to JSON Array [ {personname: surname:
      * address:{city:street:build:flat:}} ]
@@ -209,14 +208,14 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             JSONObject jsnData = new JSONObject();
             jsnData.put(TAG_PSNNAME, person.getName());
             jsnData.put(TAG_SURNAME, person.getSurname());
-            
+
             //Address
             JSONObject jsnAddress = new JSONObject();
             jsnAddress.put(TAG_CITY, person.getAddress().getCity());
             jsnAddress.put(TAG_STREET, person.getAddress().getStreet());
             jsnAddress.put(TAG_BUILD, person.getAddress().getBuild());
             jsnAddress.put(TAG_FLAT, person.getAddress().getFlat());
-            
+
             jsnData.put(TAG_ADDRESS, jsnAddress);
             //put data into the JSONarray
             jsnArr.put(jsnData);

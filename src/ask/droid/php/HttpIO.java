@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,8 @@ import org.json.JSONObject;
  * pressed.
  */
 class HttpIO extends AsyncTask<String, String, String> {
-
+  
+    private static final String TAG = "AskJson";
     private final Activity activity;
     private final AsyncTaskListener callback;
     private ProgressDialog pDialog;
@@ -97,6 +99,7 @@ class HttpIO extends AsyncTask<String, String, String> {
         pDialog.setCancelable(true);
         pDialog.show();//shows progress dialog
         jsnObj.remove(TAG_MESSAGE);//do not send message to the server
+        Log.d(TAG, jsnObj.toString());
     }
 
     /**

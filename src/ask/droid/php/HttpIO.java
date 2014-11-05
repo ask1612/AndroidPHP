@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * pressed.
  */
 class HttpIO extends AsyncTask<String, String, String> {
-  
+
     private static final String TAG = "AskJson";
     private final Activity activity;
     private final AsyncTaskListener callback;
@@ -42,6 +42,7 @@ class HttpIO extends AsyncTask<String, String, String> {
     private static Resources res;// 
     private JSONObject jsnObj;//
     private String TAG_MESSAGE;//message 
+    private String TAG_HEAD;//message 
     private String VAL_URL;//url
     private String TAG_JSON;//askJSON
     private final JSONParser jsonParser;
@@ -74,6 +75,7 @@ class HttpIO extends AsyncTask<String, String, String> {
         this.VAL_URL = res.getString(R.string.val_url);
         this.TAG_MESSAGE = res.getString(R.string.tag_message);
         this.TAG_JSON = res.getString(R.string.tag_json);
+        this.TAG_HEAD = res.getString(R.string.tag_head);
     }
 
     /**
@@ -91,14 +93,19 @@ class HttpIO extends AsyncTask<String, String, String> {
         jsnObj = callback.onTaskStarted();//get JSON object
         pDialog = new ProgressDialog(this.activity);
         try {
-            pDialog.setMessage(jsnObj.getString(TAG_MESSAGE));
+            pDialog.setMessage(jsnObj.getJSONObject(TAG_HEAD).getString(TAG_MESSAGE));
         } catch (JSONException ex) {
             Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();//shows progress dialog
-        jsnObj.remove(TAG_MESSAGE);//do not send message to the server
+        try {
+            //do not send this dialog message to the server
+            jsnObj.getJSONObject(TAG_HEAD).remove(TAG_MESSAGE);
+        } catch (JSONException ex) {
+            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Log.d(TAG, jsnObj.toString());
     }
 

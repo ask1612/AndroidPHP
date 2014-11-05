@@ -8,6 +8,7 @@
 <string name="tag_success">success</string>
 <string name="tag_btn">button</string>
 <string name="tag_data">data</string>
+<string name="tag_head">head</string>
     
     <!--Main Activity -->
 <string name="login_header">Enter User Name and Password</string>

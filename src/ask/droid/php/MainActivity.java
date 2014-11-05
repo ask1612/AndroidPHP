@@ -52,10 +52,12 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private static Resources res;
     private Button btnLogin, btnRegister;
     private EditText edtName, edtPassword;
-    private static JSONObject jsnObj;
+    private String username, password;
 
     //JSON
     private String TAG_BTN;//tag "button" 
+    private String TAG_HEAD;//tag "button" 
+    private String TAG_DATA;//tag "button" 
     private String VAL_BTNLOG;//value "login" 
     private String VAL_BTNREG;//value "register"
     private String TAG_MESSAGE;//tag "message" 
@@ -64,7 +66,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private String TAG_SUCCESS;//tag "success"
     private String TAG_NAME;//tag "name"
     private String TAG_PWD;//tag "password"
-    private String username, password;
+    private static JSONObject jsnObj;
 
     /**
      *
@@ -97,31 +99,14 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     public void onClick(View v) {
         username = edtName.getText().toString();
         password = edtPassword.getText().toString();
-        jsnObj = new JSONObject();
-        try {
-            jsnObj.put(TAG_NAME, username);
-            jsnObj.put(TAG_PWD, password);
-        } catch (JSONException ex) {
-            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-        }
         switch (v.getId()) {
             //Button Login  pressed
             case R.id.btnLogin:
-                try {
-                    jsnObj.put(TAG_BTN, VAL_BTNLOG);
-                    jsnObj.put(TAG_MESSAGE, VAL_MESSAGELOG);
-                } catch (JSONException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                putJSON(VAL_BTNLOG,VAL_MESSAGELOG);
                 break;
             //Button Register pressed    
             case R.id.btnRegister:
-                try {
-                    jsnObj.put(TAG_BTN, VAL_BTNREG);
-                    jsnObj.put(TAG_MESSAGE, VAL_MESSAGEREG);
-                } catch (JSONException ex) {
-                    Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                putJSON(VAL_BTNREG,VAL_MESSAGEREG);
                 break;
         }
         new HttpIO(MainActivity.this).execute();
@@ -149,7 +134,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
         try {
             JSONObject jsnObjResponse = new JSONObject(response);
             if (jsnObjResponse.getInt(TAG_SUCCESS) == 1
-                    && jsnObj.getString(TAG_BTN).compareTo(VAL_BTNLOG) == 0) {
+                    && jsnObj.getJSONObject(TAG_HEAD).getString(TAG_BTN).compareTo(VAL_BTNLOG) == 0) {
                 edtName.getText().clear();
                 edtPassword.getText().clear();
                 Intent personIntent = new Intent(MainActivity.this, AskJson.class);
@@ -168,6 +153,8 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
      */
     public void getResourcesStrings() {
         res = getResources();
+        this.TAG_HEAD = res.getString(R.string.tag_head);
+        this.TAG_DATA = res.getString(R.string.tag_data);
         this.TAG_SUCCESS = res.getString(R.string.tag_success);
         this.VAL_BTNLOG = res.getString(R.string.val_btnlog);
         this.VAL_BTNREG = res.getString(R.string.val_btnreg);
@@ -178,4 +165,25 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
         this.VAL_MESSAGELOG = res.getString(R.string.val_messagelog);
         this.VAL_MESSAGEREG = res.getString(R.string.val_messagereg);
     }
+     /**
+     * Writing to JSON object 
+     */
+    void putJSON(String val_btn,String val_message) {
+        try {
+            jsnObj = new JSONObject();
+            //Header
+            JSONObject jsnHead = new JSONObject();
+            jsnHead.put(TAG_BTN, val_btn);
+            jsnHead.put(TAG_MESSAGE, val_message);
+            jsnObj.put(TAG_HEAD, jsnHead);
+            //Data
+            JSONObject jsnData = new JSONObject();
+            jsnData.put(TAG_NAME, username);
+            jsnData.put(TAG_PWD, password);
+            jsnObj.put(TAG_DATA, jsnData);
+        } catch (JSONException ex) {
+            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

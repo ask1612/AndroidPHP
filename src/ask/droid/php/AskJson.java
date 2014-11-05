@@ -101,7 +101,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         switch (v.getId()) {
             //Button Save is pressed 
             case R.id.btnSave:
-                Log.d(TAG, "onClick Button started");
+                Log.d(TAG, "onClick Button SAVE  started");
                 person.setName(edtName.getText().toString());
                 person.setSurname(edtSurname.getText().toString());
                 person.getAddress().setCity(edtCity.getText().toString());

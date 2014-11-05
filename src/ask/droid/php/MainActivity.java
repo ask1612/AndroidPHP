@@ -37,8 +37,8 @@ import java.util.logging.Logger;
  * http server attemps to connect to the MySql server. When the connection is
  * success data is written or read in/out the database. When the database I/O
  * operations are ended the http server returns back to the Android application
- * a block of information as a string of an JSON object . This block consists of 2
- * fields:<success> and  <message>. The field  <success>
+ * a block of information as a string of an JSON object . This block consists of
+ * 2 fields:<success> and  <message>. The field  <success>
  * indicates whether the I/O operation was successful or no . If the field
  * <success> is 1 the database I/O operation was successful otherwise no.
  * Depending on this result the server generates a message and returns it to the
@@ -64,6 +64,8 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
     private String TAG_SUCCESS;//tag "success"
     private String TAG_NAME;//tag "name"
     private String TAG_PWD;//tag "password"
+    private String username, password;
+
     /**
      *
      * Gets called when the activity is first created.
@@ -93,13 +95,19 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
      */
     @Override
     public void onClick(View v) {
+        username = edtName.getText().toString();
+        password = edtPassword.getText().toString();
+        jsnObj = new JSONObject();
+        try {
+            jsnObj.put(TAG_NAME, username);
+            jsnObj.put(TAG_PWD, password);
+        } catch (JSONException ex) {
+            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
+        }
         switch (v.getId()) {
             //Button Login  pressed
             case R.id.btnLogin:
                 try {
-                    jsnObj = new JSONObject();
-                    jsnObj.put(TAG_NAME, edtName.getText().toString());
-                    jsnObj.put(TAG_PWD, edtPassword.getText().toString());
                     jsnObj.put(TAG_BTN, VAL_BTNLOG);
                     jsnObj.put(TAG_MESSAGE, VAL_MESSAGELOG);
                 } catch (JSONException ex) {
@@ -109,10 +117,6 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
             //Button Register pressed    
             case R.id.btnRegister:
                 try {
-               Log.d( "MY HELP", "Handling clicked button" ); 
-                     jsnObj = new JSONObject();
-                    jsnObj.put(TAG_NAME, edtName.getText().toString());
-                    jsnObj.put(TAG_PWD, edtPassword.getText().toString());
                     jsnObj.put(TAG_BTN, VAL_BTNREG);
                     jsnObj.put(TAG_MESSAGE, VAL_MESSAGEREG);
                 } catch (JSONException ex) {
@@ -146,7 +150,10 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
             JSONObject jsnObjResponse = new JSONObject(response);
             if (jsnObjResponse.getInt(TAG_SUCCESS) == 1
                     && jsnObj.getString(TAG_BTN).compareTo(VAL_BTNLOG) == 0) {
+                edtName.getText().clear();
+                edtPassword.getText().clear();
                 Intent personIntent = new Intent(MainActivity.this, AskJson.class);
+                personIntent.putExtra(TAG_NAME, username);
                 MainActivity.this.startActivity(personIntent);
             }
         } catch (JSONException ex) {

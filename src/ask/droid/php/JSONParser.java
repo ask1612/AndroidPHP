@@ -39,8 +39,6 @@ public class JSONParser {
     private static InputStream inputstream = null;
     private static JSONObject jObj = null;
     private static String json = "";
-    private static final String TAG_JSONPARSER = "JSON Parser";
-    private static final String TAG_HTTPREQUEST = "Http Request";
     private static HttpResponse httpResponse;
 
     // constructor

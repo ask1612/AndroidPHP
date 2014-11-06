@@ -1,5 +1,5 @@
 /**
- * I do not sleep tonight... I may not ever...
+ * Niemand ist perfekt. I do not sleep tonight... I may not ever...
  *
  * HttpIO.java Copyright (C) 2014 The Android Open Source Project
  *

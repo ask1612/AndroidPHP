@@ -1,5 +1,5 @@
 /**
- * I do not sleep tonight... I may not ever...
+ * Niemand ist perfekt. I do not sleep tonight... I may not ever...
  *
  * MainActivity.java Copyright (C) 2014 The Android Open Source Project
  *
@@ -102,11 +102,11 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
         switch (v.getId()) {
             //Button Login  pressed
             case R.id.btnLogin:
-                putJSON(VAL_BTNLOG,VAL_MESSAGELOG);
+                putJSON(VAL_BTNLOG, VAL_MESSAGELOG);
                 break;
             //Button Register pressed    
             case R.id.btnRegister:
-                putJSON(VAL_BTNREG,VAL_MESSAGEREG);
+                putJSON(VAL_BTNREG, VAL_MESSAGEREG);
                 break;
         }
         new HttpIO(MainActivity.this).execute();
@@ -165,10 +165,11 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
         this.VAL_MESSAGELOG = res.getString(R.string.val_messagelog);
         this.VAL_MESSAGEREG = res.getString(R.string.val_messagereg);
     }
-     /**
-     * Writing to JSON object 
+
+    /**
+     * Writing to JSON object
      */
-    void putJSON(String val_btn,String val_message) {
+    void putJSON(String val_btn, String val_message) {
         try {
             jsnObj = new JSONObject();
             //Header

@@ -115,7 +115,6 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
                     person.getAddress().setFlat(Integer.parseInt(s));
                 }
 
-                clearEdt();
                 break;
 
         }
@@ -145,6 +144,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
      *
      */
     public void onTaskFinished(String response) {
+        clearEdt();
         jsnObj = new JSONObject();
     }
 

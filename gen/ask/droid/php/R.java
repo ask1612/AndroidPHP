@@ -67,49 +67,50 @@ public final class R {
         /**  common data  
          */
         public static final int app_name=0x7f050000;
-        public static final int build=0x7f050019;
-        public static final int button_save=0x7f05001b;
-        public static final int city=0x7f050017;
-        public static final int flat=0x7f05001a;
+        public static final int build=0x7f05001a;
+        public static final int button_save=0x7f05001c;
+        public static final int city=0x7f050018;
+        public static final int flat=0x7f05001b;
         /** AskJson Activity
          */
-        public static final int header=0x7f050014;
-        public static final int login=0x7f05000c;
+        public static final int header=0x7f050015;
+        public static final int login=0x7f05000d;
         /** Main Activity 
          */
-        public static final int login_header=0x7f050008;
-        public static final int name=0x7f050015;
-        public static final int register=0x7f05000b;
-        public static final int street=0x7f050018;
-        public static final int surname=0x7f050016;
-        public static final int tag_address=0x7f050020;
+        public static final int login_header=0x7f050009;
+        public static final int name=0x7f050016;
+        public static final int register=0x7f05000c;
+        public static final int street=0x7f050019;
+        public static final int surname=0x7f050017;
+        public static final int tag_address=0x7f050021;
         public static final int tag_btn=0x7f050005;
-        public static final int tag_build=0x7f050023;
-        public static final int tag_city=0x7f050021;
+        public static final int tag_build=0x7f050024;
+        public static final int tag_city=0x7f050022;
+        public static final int tag_cnt=0x7f050008;
         public static final int tag_data=0x7f050006;
-        public static final int tag_flat=0x7f050024;
+        public static final int tag_flat=0x7f050025;
         public static final int tag_head=0x7f050007;
-        public static final int tag_json=0x7f050013;
+        public static final int tag_json=0x7f050014;
         public static final int tag_message=0x7f050003;
-        public static final int tag_name=0x7f050011;
-        public static final int tag_psnname=0x7f05001e;
-        public static final int tag_pwd=0x7f050012;
-        public static final int tag_street=0x7f050022;
+        public static final int tag_name=0x7f050012;
+        public static final int tag_psnname=0x7f05001f;
+        public static final int tag_pwd=0x7f050013;
+        public static final int tag_street=0x7f050023;
         public static final int tag_success=0x7f050004;
-        public static final int tag_surname=0x7f05001f;
+        public static final int tag_surname=0x7f050020;
         public static final int tag_url=0x7f050002;
-        public static final int user_name=0x7f050009;
-        public static final int user_password=0x7f05000a;
-        public static final int val_btnlog=0x7f05000f;
-        public static final int val_btnreg=0x7f050010;
+        public static final int user_name=0x7f05000a;
+        public static final int user_password=0x7f05000b;
+        public static final int val_btnlog=0x7f050010;
+        public static final int val_btnreg=0x7f050011;
         /**  Person data 
          */
-        public static final int val_btnsave=0x7f05001c;
-        public static final int val_messagelog=0x7f05000e;
+        public static final int val_btnsave=0x7f05001d;
+        public static final int val_messagelog=0x7f05000f;
         /**  User data 
          */
-        public static final int val_messagereg=0x7f05000d;
-        public static final int val_messagesave=0x7f05001d;
+        public static final int val_messagereg=0x7f05000e;
+        public static final int val_messagesave=0x7f05001e;
         public static final int val_url=0x7f050001;
     }
 }

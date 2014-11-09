@@ -35,6 +35,8 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     private JSONObject jsnObj;
     private final Person person;
     private String username;
+    private int count;
+
     //JSON
     private String TAG_BTN;//tag "button" 
     private String TAG_PSNNAME;
@@ -50,6 +52,8 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     private String TAG_DATA;
     private String TAG_HEAD;
     private String TAG_NAME;//tag "name"
+    private String TAG_CNT;//tag "name"
+    private String TAG_SUCCESS;//tag "success"
 
     /**
      * constructor
@@ -57,6 +61,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     public AskJson() {
         this.jsnObj = new JSONObject();
         this.person = new Person();
+        this.count = 0;
     }
 
     /**
@@ -97,24 +102,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             //Button Save is pressed 
             case R.id.btnSave:
                 Log.d(TAG, "onClick Button SAVE  started");
-                person.setName(edtName.getText().toString());
-                person.setSurname(edtSurname.getText().toString());
-                person.getAddress().setCity(edtCity.getText().toString());
-                person.getAddress().setStreet(edtStreet.getText().toString());
-                String s = edtBuild.getText().toString();
-                if (s.isEmpty()) {
-                    person.getAddress().setBuild(0);
-                } else {
-                    person.getAddress().setBuild(Integer.parseInt(s));
-
-                }
-                s = edtFlat.getText().toString();
-                if (s.isEmpty()) {
-                    person.getAddress().setFlat(0);
-                } else {
-                    person.getAddress().setFlat(Integer.parseInt(s));
-                }
-
+                setPersonData();
                 break;
 
         }
@@ -133,7 +121,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
      *
      */
     public JSONObject onTaskStarted() {
-        return jsnObj;
+        return this.jsnObj;
     }
 
     /**
@@ -144,8 +132,13 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
      *
      */
     public void onTaskFinished(String response) {
+        try {
+            JSONObject jsnObjResponse = new JSONObject(response);
+            this.count = jsnObjResponse.getInt(TAG_SUCCESS);
+        } catch (JSONException ex) {
+            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+        }
         clearEdt();
-        jsnObj = new JSONObject();
     }
 
     /**
@@ -169,6 +162,8 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         this.TAG_DATA = res.getString(R.string.tag_data);
         this.TAG_HEAD = res.getString(R.string.tag_head);
         this.TAG_NAME = res.getString(R.string.tag_name);
+        this.TAG_CNT = res.getString(R.string.tag_cnt);
+        this.TAG_SUCCESS = res.getString(R.string.tag_success);
 
     }
 
@@ -184,6 +179,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             jsnHead.put(TAG_NAME, username);
             jsnHead.put(TAG_BTN, VAL_BTNSAVE);
             jsnHead.put(TAG_MESSAGE, VAL_MESSAGESAVE);
+            jsnHead.put(TAG_CNT, count);
             jsnObj.put(TAG_HEAD, jsnHead);
             //Data
             JSONObject jsnData = new JSONObject();
@@ -201,6 +197,30 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         } catch (JSONException ex) {
             Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Set person data
+     */
+    void setPersonData() {
+        person.setName(edtName.getText().toString());
+        person.setSurname(edtSurname.getText().toString());
+        person.getAddress().setCity(edtCity.getText().toString());
+        person.getAddress().setStreet(edtStreet.getText().toString());
+        String s = edtBuild.getText().toString();
+        if (s.isEmpty()) {
+            person.getAddress().setBuild(0);
+        } else {
+            person.getAddress().setBuild(Integer.parseInt(s));
+
+        }
+        s = edtFlat.getText().toString();
+        if (s.isEmpty()) {
+            person.getAddress().setFlat(0);
+        } else {
+            person.getAddress().setFlat(Integer.parseInt(s));
+        }
+
     }
 
     /**

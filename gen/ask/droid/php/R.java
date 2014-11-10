@@ -33,8 +33,8 @@ public final class R {
         public static final int icon1=0x7f020002;
     }
     public static final class id {
-        public static final int btnLogin=0x7f060016;
-        public static final int btnRegister=0x7f060017;
+        public static final int btnLogin=0x7f060017;
+        public static final int btnRegister=0x7f060018;
         public static final int btnSave=0x7f06000d;
         public static final int edtBuild=0x7f06000b;
         public static final int edtCity=0x7f060009;
@@ -42,26 +42,28 @@ public final class R {
         public static final int edtName=0x7f060001;
         public static final int edtStreet=0x7f06000a;
         public static final int edtSurname=0x7f060008;
-        public static final int edtUserName=0x7f060014;
-        public static final int edtUserPassword=0x7f060015;
+        public static final int edtUserName=0x7f060015;
+        public static final int edtUserPassword=0x7f060016;
         public static final int image=0x7f06000f;
         public static final int layoutImageToast=0x7f06000e;
+        public static final int lvPersonData=0x7f060011;
         public static final int text=0x7f060010;
         public static final int txtBuild=0x7f060006;
         public static final int txtCity=0x7f060004;
         public static final int txtFlat=0x7f060007;
         public static final int txtHeader=0x7f060000;
-        public static final int txtLoginHeader=0x7f060011;
+        public static final int txtLoginHeader=0x7f060012;
         public static final int txtName=0x7f060002;
         public static final int txtStreet=0x7f060005;
         public static final int txtSurname=0x7f060003;
-        public static final int txtUserName=0x7f060012;
-        public static final int txtUserPassword=0x7f060013;
+        public static final int txtUserName=0x7f060013;
+        public static final int txtUserPassword=0x7f060014;
     }
     public static final class layout {
         public static final int data_input=0x7f030000;
         public static final int image_toast=0x7f030001;
-        public static final int main=0x7f030002;
+        public static final int list=0x7f030002;
+        public static final int main=0x7f030003;
     }
     public static final class string {
         /**  common data  

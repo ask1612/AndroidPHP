@@ -1,7 +1,7 @@
 /**
  * Niemand ist perfekt. I do not sleep tonight... I may not ever
  *
- * AskJson.java Copyright (C) 2014 The Android Open Source Project
+ * InputPersonDataActivity.java Copyright (C) 2014 The Android Open Source Project
  *
  * @author ASK https://github.com/ask1612/AndroidPHP.git
  *
@@ -54,6 +54,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
     private String TAG_NAME;//tag "name"
     private String TAG_CNT;//tag "name"
     private String TAG_SUCCESS;//tag "success"
+   private String TAG_JSON;//tag "success"
 
     /**
      * constructor
@@ -61,7 +62,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
     public InputPersonDataActivity() {
         this.jsnObj = new JSONObject();
         this.person = new Person();
-        this.count = 0;
+        this.count = 1;
     }
 
     /**
@@ -131,10 +132,17 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
      * @param response gets a string of an JSON object
      *
      */
+    
     public void onTaskFinished(String response) {
         try {
             JSONObject jsnObjResponse = new JSONObject(response);
             this.count = jsnObjResponse.getInt(TAG_SUCCESS);
+            if(this.count==1){
+                Log.d(TAG_JSON,"InputPersonDataActivity "+ jsnObjResponse.getString(TAG_MESSAGE));
+                  Intent personListIntent = new Intent(InputPersonDataActivity.this, ListPersonDataActivity.class);
+                personListIntent.putExtra(TAG_JSON, jsnObjResponse.getString(TAG_MESSAGE));
+                InputPersonDataActivity.this.startActivity(personListIntent);            
+            }
         } catch (JSONException ex) {
             Logger.getLogger(InputPersonDataActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -164,6 +172,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
         this.TAG_NAME = res.getString(R.string.tag_name);
         this.TAG_CNT = res.getString(R.string.tag_cnt);
         this.TAG_SUCCESS = res.getString(R.string.tag_success);
+        this.TAG_JSON = res.getString(R.string.tag_json);
 
     }
 

@@ -1,8 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Niemand ist perfekt. I do not sleep tonight... I may not ever...
+ *
+ * ListPersonDataActivity.java Copyright (C) 2014 The Android Open Source Project
+ *
+ * @author ASK https://github.com/ask1612/AndroidPHP.git
  */
+
 package ask.droid.php;
 
 import android.app.Activity;

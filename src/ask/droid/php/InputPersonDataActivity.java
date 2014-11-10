@@ -1,7 +1,8 @@
 /**
  * Niemand ist perfekt. I do not sleep tonight... I may not ever
  *
- * InputPersonDataActivity.java Copyright (C) 2014 The Android Open Source Project
+ * InputPersonDataActivity.java Copyright (C) 2014 The Android Open Source
+ * Project
  *
  * @author ASK https://github.com/ask1612/AndroidPHP.git
  *
@@ -23,8 +24,8 @@ import org.json.JSONObject;
 import android.view.View.OnClickListener;
 
 /**
- * Class InputPersonDataActivity is an Activity that intendet to input data of any person. This
- * data is written into a MySql database
+ * Class InputPersonDataActivity is an Activity that intendet to input data of
+ * any person. This data is written into a MySql database
  */
 public class InputPersonDataActivity extends Activity implements AsyncTaskListener, OnClickListener {
 
@@ -52,17 +53,18 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
     private String TAG_DATA;
     private String TAG_HEAD;
     private String TAG_NAME;//tag "name"
-    private String TAG_CNT;//tag "name"
+    private String TAG_CNT;//tag count of records
     private String TAG_SUCCESS;//tag "success"
-   private String TAG_JSON;//tag "success"
-
+    private String TAG_JSON;//
+    private String TAG_REC;//
+    private static final int  RECORDS=2;//number of echoing records 
     /**
      * constructor
      */
     public InputPersonDataActivity() {
         this.jsnObj = new JSONObject();
         this.person = new Person();
-        this.count = 1;
+        this.count = RECORDS;
     }
 
     /**
@@ -132,16 +134,17 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
      * @param response gets a string of an JSON object
      *
      */
-    
     public void onTaskFinished(String response) {
         try {
             JSONObject jsnObjResponse = new JSONObject(response);
-            this.count = jsnObjResponse.getInt(TAG_SUCCESS);
-            if(this.count==1){
-                Log.d(TAG_JSON,"InputPersonDataActivity "+ jsnObjResponse.getString(TAG_MESSAGE));
-                  Intent personListIntent = new Intent(InputPersonDataActivity.this, ListPersonDataActivity.class);
-                personListIntent.putExtra(TAG_JSON, jsnObjResponse.getString(TAG_MESSAGE));
-                InputPersonDataActivity.this.startActivity(personListIntent);            
+             this.count=this.count- jsnObjResponse.getInt(TAG_SUCCESS);
+            if (this.count == 0) {
+                this.count = RECORDS;
+                Log.d(TAG_JSON, "InputPersonDataActivity " + jsnObjResponse.getString(TAG_DATA));
+                Intent personListIntent = new Intent(InputPersonDataActivity.this, ListPersonDataActivity.class);
+                personListIntent.putExtra(TAG_JSON, jsnObjResponse.getString(TAG_DATA));
+                personListIntent.putExtra(TAG_CNT,Integer.toString(this.count) );
+                InputPersonDataActivity.this.startActivity(personListIntent);
             }
         } catch (JSONException ex) {
             Logger.getLogger(InputPersonDataActivity.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,6 +176,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
         this.TAG_CNT = res.getString(R.string.tag_cnt);
         this.TAG_SUCCESS = res.getString(R.string.tag_success);
         this.TAG_JSON = res.getString(R.string.tag_json);
+        this.TAG_REC = res.getString(R.string.tag_rec);
 
     }
 
@@ -189,6 +193,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
             jsnHead.put(TAG_BTN, VAL_BTNSAVE);
             jsnHead.put(TAG_MESSAGE, VAL_MESSAGESAVE);
             jsnHead.put(TAG_CNT, count);
+            jsnHead.put(TAG_REC, RECORDS);
             jsnObj.put(TAG_HEAD, jsnHead);
             //Data
             JSONObject jsnData = new JSONObject();

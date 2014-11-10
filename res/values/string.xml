@@ -10,6 +10,7 @@
 <string name="tag_data">data</string>
 <string name="tag_head">head</string>
 <string name="tag_cnt">count</string>
+<string name="tag_rec">record</string>
     
     <!--Main Activity -->
 <string name="login_header">Enter User Name and Password</string>

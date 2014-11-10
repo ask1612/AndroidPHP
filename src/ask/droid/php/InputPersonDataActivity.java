@@ -23,10 +23,10 @@ import org.json.JSONObject;
 import android.view.View.OnClickListener;
 
 /**
- * Class AskJson is an Activity that intendet to input data of any person. This
+ * Class InputPersonDataActivity is an Activity that intendet to input data of any person. This
  * data is written into a MySql database
  */
-public class AskJson extends Activity implements AsyncTaskListener, OnClickListener {
+public class InputPersonDataActivity extends Activity implements AsyncTaskListener, OnClickListener {
 
     private static Resources res;
     private static final String TAG = "AskJson";//for Log.d
@@ -58,7 +58,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
     /**
      * constructor
      */
-    public AskJson() {
+    public InputPersonDataActivity() {
         this.jsnObj = new JSONObject();
         this.person = new Person();
         this.count = 0;
@@ -109,7 +109,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
         Log.d(TAG, "onClick Button Ended");
         putJSON();
         //Log.d(TAG, jsnArr.toString() + "\n");
-        new HttpIO(AskJson.this).execute();//request to http
+        new HttpIO(InputPersonDataActivity.this).execute();//request to http
 
     }
 
@@ -136,7 +136,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             JSONObject jsnObjResponse = new JSONObject(response);
             this.count = jsnObjResponse.getInt(TAG_SUCCESS);
         } catch (JSONException ex) {
-            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InputPersonDataActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
         clearEdt();
     }
@@ -195,7 +195,7 @@ public class AskJson extends Activity implements AsyncTaskListener, OnClickListe
             jsnData.put(TAG_ADDRESS, jsnAddress);
             jsnObj.put(TAG_DATA, jsnData);
         } catch (JSONException ex) {
-            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InputPersonDataActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                     && jsnObj.getJSONObject(TAG_HEAD).getString(TAG_BTN).compareTo(VAL_BTNLOG) == 0) {
                 edtName.getText().clear();
                 edtPassword.getText().clear();
-                Intent personIntent = new Intent(MainActivity.this, AskJson.class);
+                Intent personIntent = new Intent(MainActivity.this, InputPersonDataActivity.class);
                 personIntent.putExtra(TAG_NAME, username);
                 MainActivity.this.startActivity(personIntent);
             }
@@ -183,7 +183,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
             jsnData.put(TAG_PWD, password);
             jsnObj.put(TAG_DATA, jsnData);
         } catch (JSONException ex) {
-            Logger.getLogger(AskJson.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InputPersonDataActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

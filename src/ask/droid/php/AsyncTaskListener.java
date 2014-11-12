@@ -9,8 +9,9 @@ package ask.droid.php;
 
 import org.json.JSONObject;
 
+
 /**
- * Defines the AsyncTaskListener interface
+ * Defines the AsyncTaskListener interface.
  *
  */
 public interface AsyncTaskListener {

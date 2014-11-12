@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
@@ -26,25 +25,27 @@ import java.util.logging.Logger;
  * MainActivity is the first activity that appears when the application is
  * launched. This activity consists of 3 text labels, 2 edit views and 2
  * buttons. MainActivity is intended to register a new user or login with a
- * registered user to a MySql database. When the button <Register> or <Login>
- * is pressed the application creates an JSON object,reads data from edit views
- * and writes it into this JSON object , creates an async task object HttpIO and
- * invokes its execute() method . At this moment MainActivity launches the async
- * task as a background thread. This background thread interacts with the
- * MainActivity thread by the AsyncTaskListener interface. MainActivity thread
- * transfers the JSON object to the background thread via the OnTaskStarted()
- * method of this interface. Async task sends this data to a http server. The
- * http server attemps to connect to the MySql server. When the connection is
- * success data is written or read in/out the database. When the database I/O
- * operations are ended the http server returns back to the Android application
- * a block of information as a string of an JSON object . This block consists of
- * 2 fields:<success> and  <message>. The field  <success>
- * indicates whether the I/O operation was successful or no . If the field
- * <success> is 1 the database I/O operation was successful otherwise no.
- * Depending on this result the server generates a message and returns it to the
- * async task. The async task transfers it via interface method onTaskFinished()
- * to the MainActivity thread.Depending on this information MainActivity starts
- * or does not a new Activity to enter data of a person.
+ * registered user to a MySQL database. When the button <Register> or <Login>
+ * is pressed the application reads data from edit views and packages it into an
+ * JSON object , creates an async task object HttpIO and invokes its execute()
+ * method . At this moment MainActivity launches the async task as a background
+ * thread. This background thread interacts with the MainActivity thread by the
+ * AsyncTaskListener interface. MainActivity thread transfers the JSON object to
+ * the background thread via the OnTaskStarted() method of this interface. JSON
+ * object consists of 2 fields <head> and <data>. Async task sends this data to
+ * a http server. The http server attemps to connect to the MySQL server. When
+ * the connection is success data is written or read in/out the database. When
+ * the database I/O operations are ended the http server returns back to the
+ * Android application a block of information as a string of an JSON object .
+ * This JSON object consists of 3 fields:<success>
+ * ,  <message> and <data>. The field  <success> indicates whether the I/O
+ * operation was successful or not. If the field  <success> is 1 the database I/O
+ * operation was successful, otherwise no. Depending on this result the server
+ * generates a message and data. The tag  <data> is used to transfer data between
+ * client Android app and PHP server app. All of this information is packaged
+ * into a JSON object. The async task transfers it via interface method
+ * onTaskFinished() to the MainActivity thread.Depending on this information
+ * MainActivity starts or not a new Activity to enter data of a person.
  *
  */
 public class MainActivity extends Activity implements AsyncTaskListener, OnClickListener {

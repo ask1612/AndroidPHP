@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <!-- common data  -->
-<string name="app_name">AskJsonPHP</string>
+<string name="app_name">AskJson</string>
 <string name="val_url">http://192.168.1.4:7070/askJson/askjson_input.php</string>
 <string name="tag_url">url</string>
 <string name="tag_message">message</string>

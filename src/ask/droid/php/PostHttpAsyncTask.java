@@ -18,12 +18,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +41,7 @@ import org.json.JSONObject;
  * an asynchronous task, gets created when the register or login button is
  * pressed.
  */
-class HttpIO extends AsyncTask<String, String, String> {
+class PostHttpAsyncTask extends AsyncTask<String, String, String> {
 
     private static final String TAG = "AskJson";
     private final Activity activity;
@@ -45,7 +53,6 @@ class HttpIO extends AsyncTask<String, String, String> {
     private String TAG_HEAD;//message 
     private String VAL_URL;//url
     private String TAG_JSON;//askJSON
-    private final JSONParser jsonParser;
 
     ;
     /**
@@ -58,11 +65,11 @@ class HttpIO extends AsyncTask<String, String, String> {
      * @param   act    activity created this object and  invoced execute() 
      *                 method 
      */
-    public HttpIO(Activity act) {
-        this.jsonParser = new JSONParser();
+    public PostHttpAsyncTask(Activity act) {
+        //    this.jsonParser = new POSThttpJSON();
         this.activity = act;
         this.callback = (AsyncTaskListener) act;
-        //jsonParser = new JSONParser();
+        //jsonParser = new POSThttpJSON();
     }
 
     /**
@@ -95,7 +102,7 @@ class HttpIO extends AsyncTask<String, String, String> {
         try {
             pDialog.setMessage(jsnObj.getJSONObject(TAG_HEAD).getString(TAG_MESSAGE));
         } catch (JSONException ex) {
-            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostHttpAsyncTask.class.getName()).log(Level.SEVERE, null, ex);
         }
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
@@ -104,7 +111,7 @@ class HttpIO extends AsyncTask<String, String, String> {
             //do not send this dialog message to the server
             jsnObj.getJSONObject(TAG_HEAD).remove(TAG_MESSAGE);
         } catch (JSONException ex) {
-            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostHttpAsyncTask.class.getName()).log(Level.SEVERE, null, ex);
         }
         Log.d(TAG, jsnObj.toString());
     }
@@ -112,8 +119,8 @@ class HttpIO extends AsyncTask<String, String, String> {
     /**
      *
      * Gets called on the background main thread when execute() is invoked on an
-     * instance of AsyncTask HttpIO, gets an JSON object as the parameter ,
-     * makes the request to a http server returns the JSON object as an string
+ instance of AsyncTask PostHttpAsyncTask, gets an JSON object as the parameter ,
+ makes the request to a http server returns the JSON object as an string
      *
      * @param args null
      * @return JSON object converted to a string
@@ -124,12 +131,12 @@ class HttpIO extends AsyncTask<String, String, String> {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair(TAG_JSON, jsnObj.toString()));
-            jsnObj = jsonParser.makeHttpRequest(VAL_URL, "POST", params);
+            jsnObj = this.doHttpRequest(VAL_URL, params);
             // finish();
         } catch (IOException ex) {
-            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostHttpAsyncTask.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
-            Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostHttpAsyncTask.class.getName()).log(Level.SEVERE, null, ex);
         }
         return jsnObj.toString();
     }
@@ -157,9 +164,51 @@ class HttpIO extends AsyncTask<String, String, String> {
                 imageToast(jsnObj.getString(TAG_MESSAGE));
                 callback.onTaskFinished(response);
             } catch (JSONException ex) {
-                Logger.getLogger(HttpIO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PostHttpAsyncTask.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    /**
+     * This function makes a http request by POST method, passes to a given
+     * server parameters TAG_JSON and JSON object as string , gets a string from
+     * http server, converts it to a JSON object and return the JSON object. The
+     * url argument must specify an absolute {@link URL}.
+     *
+     * @param url an absolute URL
+     * @param params tag and JSON object as string
+     * @return JSON object
+     */
+    public JSONObject doHttpRequest(String url,
+            List<NameValuePair> params) throws IOException, JSONException {
+        InputStream inputstream;
+        HttpResponse httpResponse;
+            // Making HTTP request
+        //DefaultHttpClient is  used to make remote HTTP requests.
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        //Connecting via POST method
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
+        httpResponse = httpClient.execute(httpPost);
+        HttpEntity httpEntity = httpResponse.getEntity();
+        if (httpEntity != null) {
+            inputstream = httpEntity.getContent();
+                //InputStream class is used to read data from a  network.
+            //BufferedReader class  wraps the input stream reader
+            //and buffers the input. 
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputstream, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            inputstream.close();
+            jsnObj = new JSONObject(sb.toString());
+            // return JSON object
+            return jsnObj;
+        }
+        return null;
     }
 
     /**

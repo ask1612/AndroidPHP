@@ -112,7 +112,7 @@ public class InputPersonDataActivity extends Activity implements AsyncTaskListen
         Log.d(TAG, "onClick Button Ended");
         putJSON();
         //Log.d(TAG, jsnArr.toString() + "\n");
-        new HttpIO(InputPersonDataActivity.this).execute();//request to http
+        new PostHttpAsyncTask(InputPersonDataActivity.this).execute();//request to http
 
     }
 

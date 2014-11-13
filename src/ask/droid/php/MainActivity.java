@@ -26,13 +26,13 @@ import java.util.logging.Logger;
  * launched. This activity consists of 3 text labels, 2 edit views and 2
  * buttons. MainActivity is intended to register a new user or login with a
  * registered user to a MySQL database. When the button <Register> or <Login>
- * is pressed the application reads data from edit views and packages it into an
- * JSON object , creates an async task object HttpIO and invokes its execute()
- * method . At this moment MainActivity launches the async task as a background
- * thread. This background thread interacts with the MainActivity thread by the
- * AsyncTaskListener interface. MainActivity thread transfers the JSON object to
- * the background thread via the OnTaskStarted() method of this interface. JSON
- * object consists of 2 fields <head> and <data>. Async task sends this data to
+ is pressed the application reads data from edit views and packages it into an
+ JSON object , creates an async task object PostHttpAsyncTask and invokes its execute()
+ method . At this moment MainActivity launches the async task as a background
+ thread. This background thread interacts with the MainActivity thread by the
+ AsyncTaskListener interface. MainActivity thread transfers the JSON object to
+ the background thread via the OnTaskStarted() method of this interface. JSON
+ object consists of 2 fields <head> and <data>. Async task sends this data to
  * a http server. The http server attemps to connect to the MySQL server. When
  * the connection is success data is written or read in/out the database. When
  * the database I/O operations are ended the http server returns back to the
@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements AsyncTaskListener, OnClick
                 putJSON(VAL_BTNREG, VAL_MESSAGEREG);
                 break;
         }
-        new HttpIO(MainActivity.this).execute();
+        new PostHttpAsyncTask(MainActivity.this).execute();
     }
 
     /**

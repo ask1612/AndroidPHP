@@ -37,9 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Class to exchange data between the Android app and the http server. It works as
- * an asynchronous task.
- * 
+ * Class to transfer user data as an JSON object to a http server. It works as
+ * an asynchronous task, gets created when the register or login button is
+ * pressed.
  */
 class PostHttpAsyncTask extends AsyncTask<String, String, String> {
 
@@ -58,16 +58,18 @@ class PostHttpAsyncTask extends AsyncTask<String, String, String> {
     /**
      * 
      * Gonstructor  gets   Activity  as a parameter,assigns the value of this 
-     * parameter  to  its member  variable activity. It  casts the given value
+     * parameter  to  its member  variable activity. It  castings the given value
      * Activity to  the AsyncTaskListener interface and assigns it to the member
-     * variable callback. 
+     * variable callback. It creates JSONparser object.
      * 
      * @param   act    activity created this object and  invoced execute() 
      *                 method 
      */
     public PostHttpAsyncTask(Activity act) {
+        //    this.jsonParser = new POSThttpJSON();
         this.activity = act;
         this.callback = (AsyncTaskListener) act;
+        //jsonParser = new POSThttpJSON();
     }
 
     /**
@@ -174,7 +176,7 @@ class PostHttpAsyncTask extends AsyncTask<String, String, String> {
      * url argument must specify an absolute {@link URL}.
      *
      * @param url an absolute URL
-     * @param params tag JSON  and JSON object as string
+     * @param params tag and JSON object as string
      * @return JSON object
      */
     public JSONObject doHttpRequest(String url,
@@ -215,13 +217,17 @@ class PostHttpAsyncTask extends AsyncTask<String, String, String> {
      * @param string
      */
     protected void imageToast(String response) {
+        // get your image_toast.xml ayout
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.image_toast,
                 (ViewGroup) activity.findViewById(R.id.layoutImageToast));
+        // set an  image
         ImageView image = (ImageView) layout.findViewById(R.id.image);
         image.setImageResource(R.drawable.icon);
+        // set a message
         TextView text = (TextView) layout.findViewById(R.id.text);
         text.setText(response);
+        // Toast...
         Toast toast = new Toast(activity.getApplicationContext());
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);

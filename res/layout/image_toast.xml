@@ -3,7 +3,7 @@
     android:id="@+id/layoutImageToast"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/transp"
+    android:background="#FFF"
     android:orientation="horizontal"
     android:padding="5dp" >
 
@@ -17,6 +17,6 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/red" />
 
 </LinearLayout>

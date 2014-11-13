@@ -18,5 +18,7 @@ and open the template in the editor.
     <color name="apelsin">#FF8800</color>
     <color name="red">#CC0000</color>
     <color name="gray">#DCDCDC</color>
+    <color name="transp">#CC4D404D</color>
+    <color name="white">#FFFFFF</color>
     <color name="mycolor">#33b5e5</color>
 </resources>

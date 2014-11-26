@@ -1,6 +1,5 @@
 /**
- * Niemand ist perfekt. I do not sleep tonight... I may not ever...
- *
+ * Wer sucht, der findet. Bald kommt der Winter mit Schnee und Frost.
  * AsyncTaskListener.java Copyright (C) 2014 The Android Open Source Project
  *
  * @author ASK https://github.com/ask1612/AndroidPHP.git
@@ -11,7 +10,7 @@ import org.json.JSONObject;
 
 
 /**
- * Defines the AsyncTaskListener interface.
+ * Defines the AsyncTaskListener interface. 
  *
  */
 public interface AsyncTaskListener {

@@ -1,5 +1,4 @@
 /**
- * Wer sucht, der findet. Bald kommt der Winter mit Schnee und Frost.
  *
  * HttpIO.java Copyright (C) 2014 The Android Open Source Project
  *
@@ -117,13 +116,14 @@ class PostHttpAsyncTask extends AsyncTask<String, String, String> {
     /**
      *
      * Gets called on the background main thread when execute() is invoked on an
- instance of AsyncTask PostHttpAsyncTask, gets an JSON object as the parameter ,
- makes the request to a http server returns the JSON object as an string
+     * instance of AsyncTask PostHttpAsyncTask, gets an JSON object as the parameter ,
+     * makes the request to a http server returns the JSON object as an string
      *
      * @param args null
      * @return JSON object converted to a string
      *
      */
+    
     @Override
     protected String doInBackground(String... args) {
         try {

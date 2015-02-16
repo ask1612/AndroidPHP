@@ -1,5 +1,4 @@
 /**
- * Wer sucht, der findet. Bald kommt der Winter mit Schnee und Frost.
  * AsyncTaskListener.java Copyright (C) 2014 The Android Open Source Project
  *
  * @author ASK https://github.com/ask1612/AndroidPHP.git
